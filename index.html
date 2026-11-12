@@ -1,19 +1,4 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <style>
-                body {
-                  background-color: white; /* Ensure the iframe has a white background */
-                }
-
-                
-              </style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -31,7 +16,7 @@ img,video,audio,iframe{max-width:100%;height:auto;display:block;}
 .logo-icon{width:44px;height:44px;background:#fbbf24;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.75rem;}
 .logo-title{font-size:1.25rem;font-weight:700;}
 .logo-sub{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:#fbbf24;}
-.nav-btn{background:transparent;color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.8rem;cursor:pointer;text-transform:uppercase;font-weight:500;}
+.nav-btn{background:transparent;color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.8rem;cursor:pointer;text-transform:uppercase;}
 .nav-btn:hover{color:#fbbf24;}
 .nav-wa{background:#25d366;color:#fff;padding:0.5rem 1rem;border:none;cursor:pointer;text-transform:uppercase;font-weight:700;font-size:0.75rem;text-decoration:none;border-radius:20px;}
 .cms-btn{background:#fbbf24;color:#000;padding:0.5rem 1rem;font-size:0.75rem;font-weight:700;border:none;cursor:pointer;text-transform:uppercase;}
@@ -123,7 +108,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 .edit-ind{background:#fbbf24;color:#000;padding:0.5rem 1rem;font-size:0.8rem;font-weight:700;margin-bottom:1rem;}
 .lead-box{border-left:4px solid #fbbf24;padding:1rem;margin-bottom:1rem;background:#fffbeb;}
 .lead-box textarea{font-style:italic;font-size:1.05rem;border:none;background:transparent;margin-bottom:0;}
-.lead-box textarea:focus{border:none;}
 .editor-toolbar{background:#f7f7f5;border:1px solid #e5e5e5;border-bottom:none;padding:0.5rem;display:flex;flex-wrap:wrap;gap:0.25rem;align-items:center;}
 .ed-btn{background:#fff;border:1px solid #e5e5e5;padding:0.4rem 0.6rem;cursor:pointer;font-size:0.85rem;min-width:32px;}
 .ed-btn:hover{background:#fbbf24;color:#000;}
@@ -401,40 +385,24 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
     </div>
     <div style="padding:1.5rem;">
 
-      <!-- ARTÍCULOS -->
       <div id="tabArticles" class="tab-content active">
         <div id="editInd" style="display:none;" class="edit-ind">✏️ Editando · <button onclick="cancelEdit()" style="background:none;border:none;color:#b91c1c;cursor:pointer;font-weight:700;">Cancelar</button></div>
         <div id="storageMode"></div>
-        
         <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;">
           <button onclick="setArtType('cronica',this)" class="tab-btn active">📝 Crónica</button>
           <button onclick="setArtType('editorial',this)" class="tab-btn">✒️ Editorial</button>
           <button onclick="setArtType('noticia',this)" class="tab-btn">📰 Noticia</button>
         </div>
-
         <label>Titular principal *</label>
         <input type="text" id="artTitle" placeholder="Ej: Magallanes remonta en la novena" style="font-size:1.1rem;font-weight:700;">
-        
         <div class="lead-box">
           <label style="color:#d4a017;">📝 Lead / Bajada periodística</label>
           <textarea id="artLead" rows="2" placeholder="Primer párrafo que resume la noticia..."></textarea>
         </div>
-
         <label>Contenido completo (editor tipo Word)</label>
-        
         <div class="editor-toolbar">
-          <select class="ed-select" onchange="execCmd('fontName',this.value)">
-            <option value="Georgia">Georgia</option>
-            <option value="Arial">Arial</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Verdana">Verdana</option>
-          </select>
-          <select class="ed-select" onchange="execCmd('fontSize',this.value)">
-            <option value="3">Normal</option>
-            <option value="2">Pequeño</option>
-            <option value="4">Grande</option>
-            <option value="5">Muy grande</option>
-          </select>
+          <select class="ed-select" onchange="execCmd('fontName',this.value)"><option value="Georgia">Georgia</option><option value="Arial">Arial</option><option value="Times New Roman">Times New Roman</option><option value="Verdana">Verdana</option></select>
+          <select class="ed-select" onchange="execCmd('fontSize',this.value)"><option value="3">Normal</option><option value="2">Pequeño</option><option value="4">Grande</option><option value="5">Muy grande</option></select>
           <button class="ed-btn" onclick="execCmd('bold')"><strong>B</strong></button>
           <button class="ed-btn" onclick="execCmd('italic')"><em>I</em></button>
           <button class="ed-btn" onclick="execCmd('underline')"><u>U</u></button>
@@ -450,9 +418,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
           <button class="ed-btn" onclick="insertLink()">🔗</button>
           <button class="ed-btn" onclick="execCmd('removeFormat')">✖</button>
         </div>
-        
         <div id="artContent" class="editor-content" contenteditable="true"></div>
-
         <h4 style="margin:1.5rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">📊 Datos Sabermétricos</h4>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;">
           <div><label>wOBA</label><input type="number" id="artWoba" step="0.001" placeholder="0.350"></div>
@@ -462,30 +428,26 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
           <div><label>Exit Vel. (mph)</label><input type="number" id="artEv" step="0.1" placeholder="92.5"></div>
           <div><label>Launch Angle (°)</label><input type="number" id="artLa" step="0.1" placeholder="15.2"></div>
         </div>
-
         <h4 style="margin:1.5rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">🖼️ Imagen</h4>
         <div class="upload-area" id="artImgArea" onclick="document.getElementById('artImg').click()">
-          <input type="file" id="artImg" accept="image/*" onchange="handleFile(this,'artImgArea','artImgPrev','images')">
+          <input type="file" id="artImg" accept="image/*" onchange="handleFile(this,'artImgArea','artImgPrev')">
           <div style="font-size:2rem;">📷</div>
           <div style="font-size:0.85rem;color:#404040;"><strong>Haz clic para subir imagen</strong><br><small>Se subirá a Supabase Storage</small></div>
         </div>
         <div id="artImgPrev" class="preview-box" style="display:none;"></div>
         <label>🔗 O URL de imagen</label>
         <input type="text" id="artImgUrl" placeholder="https://...">
-
         <h4 style="margin:1.5rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">✍️ Autor y Etiquetas</h4>
         <label>Autor</label>
         <input type="text" id="artAuthor" value="Lic. Luis Aponte">
         <label>Etiquetas (separadas por coma)</label>
         <input type="text" id="artTags" placeholder="Magallanes, LVBP, sabermetría">
-
         <button onclick="publishArticle()" class="btn-black" style="width:100%;padding:1rem;margin-top:1rem;" id="artSubmitBtn">📤 PUBLICAR ARTÍCULO</button>
         <div id="artStatus" style="margin-top:1rem;"></div>
         <h4 style="margin:2rem 0 1rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">📚 Artículos Publicados</h4>
         <div id="cmsArtList"></div>
       </div>
 
-      <!-- BANNERS -->
       <div id="tabBanners" class="tab-content">
         <div class="info">🎯 Banners Carrusel · Hasta 15 Premium + 15 Standard</div>
         <div style="display:flex;gap:0.5rem;margin-bottom:1rem;border-bottom:2px solid #e5e5e5;">
@@ -500,7 +462,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <input type="text" id="banLink" placeholder="https://...">
         <label>🖼️ IMAGEN</label>
         <div class="upload-area" id="banImgArea" onclick="document.getElementById('banImg').click()">
-          <input type="file" id="banImg" accept="image/*" onchange="handleFile(this,'banImgArea','banImgPrev','images')">
+          <input type="file" id="banImg" accept="image/*" onchange="handleFile(this,'banImgArea','banImgPrev')">
           <div style="font-size:2rem;">🖼️</div>
           <div style="font-size:0.85rem;color:#404040;"><strong>Subir imagen</strong></div>
         </div>
@@ -510,7 +472,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="jingleSection">
           <label>🎵 JINGLE MP3 (solo Premium)</label>
           <div class="upload-area" id="banJingleArea" onclick="document.getElementById('banJingle').click()">
-            <input type="file" id="banJingle" accept="audio/*" onchange="handleFile(this,'banJingleArea','banJinglePrev','audio')">
+            <input type="file" id="banJingle" accept="audio/*" onchange="handleFile(this,'banJingleArea','banJinglePrev')">
             <div style="font-size:2rem;">🎵</div>
             <div style="font-size:0.85rem;color:#404040;"><strong>Subir jingle</strong></div>
           </div>
@@ -522,7 +484,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="banList"></div>
       </div>
 
-      <!-- VISUALES -->
       <div id="tabVisuals" class="tab-content">
         <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
           <button onclick="setVisType('fotorreportaje',this)" class="tab-btn active">📷 Fotorreportaje</button>
@@ -531,7 +492,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <label>Título</label>
         <input type="text" id="visTitle" placeholder="Título">
         <div class="upload-area" id="visImgArea" onclick="document.getElementById('visImg').click()">
-          <input type="file" id="visImg" accept="image/*" onchange="handleFile(this,'visImgArea','visImgPrev','images')">
+          <input type="file" id="visImg" accept="image/*" onchange="handleFile(this,'visImgArea','visImgPrev')">
           <div style="font-size:2rem;">📷</div>
           <div style="font-size:0.85rem;color:#404040;"><strong>Subir imagen</strong></div>
         </div>
@@ -544,7 +505,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="cmsVisList"></div>
       </div>
 
-      <!-- MULTIMEDIA -->
       <div id="tabMedia" class="tab-content">
         <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
           <button onclick="setMedType('podcast',this)" class="tab-btn active">🎙️ Podcast</button>
@@ -553,7 +513,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <label>Título</label>
         <input type="text" id="medTitle" placeholder="Título">
         <div class="upload-area" id="medFileArea" onclick="document.getElementById('medFile').click()">
-          <input type="file" id="medFile" accept="audio/*,video/*" onchange="handleFile(this,'medFileArea','medFilePrev','auto')">
+          <input type="file" id="medFile" accept="audio/*,video/*" onchange="handleFile(this,'medFileArea','medFilePrev')">
           <div style="font-size:2rem;">🎵</div>
           <div style="font-size:0.85rem;color:#404040;"><strong>Subir audio/video</strong></div>
         </div>
@@ -568,12 +528,11 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="cmsMedList"></div>
       </div>
 
-      <!-- STORIES -->
       <div id="tabStories" class="tab-content">
         <label>Título</label>
         <input type="text" id="stoTitle" placeholder="Título">
         <div class="upload-area" id="stoImgArea" onclick="document.getElementById('stoImg').click()">
-          <input type="file" id="stoImg" accept="image/*" onchange="handleFile(this,'stoImgArea','stoImgPrev','images')">
+          <input type="file" id="stoImg" accept="image/*" onchange="handleFile(this,'stoImgArea','stoImgPrev')">
           <div style="font-size:2rem;">📷</div>
           <div style="font-size:0.85rem;color:#404040;"><strong>Subir imagen</strong></div>
         </div>
@@ -584,7 +543,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="stoStatus" style="margin-top:1rem;"></div>
       </div>
 
-      <!-- DIRECTOR -->
       <div id="tabDirector" class="tab-content">
         <label>Título</label>
         <input type="text" id="dirTitle" placeholder="Título">
@@ -594,7 +552,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="dirStatus" style="margin-top:1rem;"></div>
       </div>
 
-      <!-- ROSTER -->
       <div id="tabRoster" class="tab-content">
         <label>Equipo Local</label>
         <input type="text" id="homeTeam" placeholder="Navegantes">
@@ -605,7 +562,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="boxStatus" style="margin-top:1rem;"></div>
       </div>
 
-      <!-- RADIO -->
       <div id="tabRadio" class="tab-content">
         <label>Título</label>
         <input type="text" id="radTitle" placeholder="Jingle">
@@ -617,7 +573,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="radList"></div>
       </div>
 
-      <!-- VIP -->
       <div id="tabVip" class="tab-content">
         <div class="info">⭐ Configuración VIP</div>
         <label>📱 WhatsApp del Director</label>
@@ -632,7 +587,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="vipStatus" style="margin-top:1rem;"></div>
       </div>
 
-      <!-- CHAT -->
       <div id="tabChat" class="tab-content">
         <label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:normal;font-size:0.9rem;">
           <input type="checkbox" id="chatActive" style="width:auto;"><span>Chat activo</span>
@@ -641,13 +595,11 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <button onclick="clearChat()" style="color:#b91c1c;margin-top:0.75rem;background:none;border:none;cursor:pointer;">🗑️ Borrar mensajes</button>
       </div>
 
-      <!-- COMMENTS -->
       <div id="tabComments" class="tab-content">
         <label>Moderación del Paredón</label>
         <div id="paredonMod"></div>
       </div>
 
-      <!-- ANALYTICS -->
       <div id="tabAnalytics" class="tab-content">
         <div class="info">📊 Analíticas · Datos de Supabase</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem;">
@@ -670,7 +622,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         </div>
       </div>
 
-      <!-- SETTINGS -->
       <div id="tabSettings" class="tab-content">
         <div class="info">⚙️ Configuración del sitio</div>
         <div style="padding:1rem;background:#f7f7f5;">
@@ -679,7 +630,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
           <p style="font-size:0.85rem;margin-bottom:1rem;">Estado: <span id="sbConnectionStatus">Verificando...</span></p>
           <button onclick="testConnection()" class="btn-gold" style="width:100%;margin-bottom:0.5rem;">🔄 Probar conexión</button>
           <button onclick="loadDemoData()" class="btn-gold" style="width:100%;margin-bottom:0.5rem;">🔄 Cargar datos demo</button>
-          <button onclick="clearAllData()" class="btn-outline" style="width:100%;color:#b91c1c;border-color:#b91c1c;">🗑️ Borrar todo de Supabase</button>
+          <button onclick="clearAllData()" class="btn-outline" style="width:100%;color:#b91c1c;border-color:#b91c1c;">🗑️ Borrar todo</button>
         </div>
       </div>
 
@@ -687,7 +638,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
   </div>
 </div>
 
-<!-- MODAL ARTÍCULO COMPLETO -->
 <div id="articleFullModal" class="modal">
   <div class="modal-box full">
     <div class="modal-head" style="position:sticky;top:0;background:#fff;z-index:10;">
@@ -698,7 +648,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
   </div>
 </div>
 
-<!-- MODAL VIP -->
 <div id="vipModal" class="modal">
   <div class="modal-box" style="max-width:600px;">
     <div class="modal-head">
@@ -719,7 +668,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
           <option value="">Selecciona</option>
           <option>Venezuela</option><option>Colombia</option><option>México</option><option>USA</option><option>España</option><option>Otro</option>
         </select>
-        
         <h4 style="margin:1.5rem 0 0.75rem;">💎 Plan</h4>
         <label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:normal;font-size:0.9rem;font-weight:normal;margin-bottom:0.5rem;padding:0.5rem;border:1px solid #e5e5e5;">
           <input type="radio" name="vipPlan" value="free" style="width:auto;" checked onchange="togglePay()"> <strong>Boletín gratis</strong>
@@ -730,7 +678,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:normal;font-size:0.9rem;font-weight:normal;padding:0.5rem;background:#fef2f2;border:2px solid #b91c1c;">
           <input type="radio" name="vipPlan" value="palco" style="width:auto;" onchange="togglePay()"> <strong>Palco del Director — $50/año</strong>
         </label>
-
         <div id="paySection" style="display:none;">
           <h4 style="margin:1.5rem 0 0.75rem;">💳 Método de Pago</h4>
           <div class="pay-method" onclick="selectPay('pagomovil',this)"><div style="font-size:1.5rem;">📱</div><div><strong>Pago Móvil</strong></div></div>
@@ -738,7 +685,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
           <div class="pay-method" onclick="selectPay('binance',this)"><div style="font-size:1.5rem;">🪙</div><div><strong>Binance</strong></div></div>
           <div class="pay-method" onclick="selectPay('paypal',this)"><div style="font-size:1.5rem;">🅿️</div><div><strong>PayPal</strong></div></div>
           <input type="hidden" id="selPayMethod" value="">
-          
           <div id="payDetails" style="display:none;margin-top:1rem;">
             <label>Datos del pago</label>
             <div id="payInstBox" style="background:#fff;padding:0.75rem;border-left:3px solid #fbbf24;margin-bottom:1rem;white-space:pre-wrap;font-size:0.85rem;"></div>
@@ -750,14 +696,12 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
             <input type="date" id="payDate" required>
           </div>
         </div>
-
         <button type="submit" class="btn-wa" style="margin-top:1rem;padding:1rem;">💬 SUSCRIBIRME POR WHATSAPP</button>
       </form>
     </div>
   </div>
 </div>
 
-<!-- MODAL VIP SUCCESS -->
 <div id="vipOkModal" class="modal">
   <div class="modal-box">
     <div class="modal-body" style="text-align:center;">
@@ -779,7 +723,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
   </div>
 </div>
 
-<!-- MODAL ABOUT -->
 <div id="aboutModal" class="modal">
   <div class="modal-box">
     <div class="modal-head">
@@ -795,7 +738,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
   </div>
 </div>
 
-<!-- MODAL RADIO -->
 <div id="radioModal" class="modal">
   <div class="modal-box">
     <div class="modal-head">
@@ -818,7 +760,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 
 <script>
 // ============================================================
-// CONFIGURACIÓN SUPABASE - YA CONFIGURADA
+// CONFIGURACIÓN SUPABASE - UNA SOLA DECLARACIÓN
 // ============================================================
 const SUPABASE_URL = 'https://jwizuyipoymqzvuirnb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3aXp1eW9pcG95bXF6dnVpcm5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxMTU5ODMsImV4cCI6MjEwNzY5MTk4M30.zJCH7t3FkmyNAwxnt6pMGFB-leiANwgdt0QA6wwVMtU';
@@ -832,6 +774,7 @@ async function initSupabase() {
     var { error } = await sb.from('articles').select('id').limit(1);
     if (error) {
       updateSbStatus('❌ Error: ' + error.message, 'err');
+      sb = null;
       return false;
     }
     updateSbStatus('✅ Supabase conectado', 'ok');
@@ -839,6 +782,7 @@ async function initSupabase() {
   } catch(e) {
     console.error('Error Supabase:', e);
     updateSbStatus('❌ Error conexión', 'err');
+    sb = null;
     return false;
   }
 }
@@ -854,7 +798,7 @@ async function testConnection() {
     return;
   }
   try {
-    var { data, error } = await sb.from('articles').select('id').limit(1);
+    var { error } = await sb.from('articles').select('id').limit(1);
     if (error) throw error;
     document.getElementById('sbConnectionStatus').innerHTML = '<span style="color:#16a34a;">✅ Conectado correctamente</span>';
     document.getElementById('sbUrlDisplay').textContent = SUPABASE_URL;
@@ -863,16 +807,12 @@ async function testConnection() {
   }
 }
 
-// ============================================================
-// ESTADO GLOBAL
-// ============================================================
 let curUser = null;
 let curArtType = 'cronica';
 let curVisType = 'fotorreportaje';
 let curMedType = 'podcast';
 let curBanType = 'prem';
 let editId = null;
-
 let articles = [];
 let visuals = [];
 let medias = [];
@@ -895,50 +835,35 @@ let tmpFiles = {};
 const EMOJIS = ['😀','😂','🤣','😍','🥰','😎','🤔','😮','😢','😡','👍','👎','👏','🙌','🔥','💯','⚾','🏆','🎯','💪','❤️','🧡','💛','💚','💙','🇻🇪','🎉','🎊','✨','⭐','🌟','💫','🏅','🥇','🎖️','👀','💭','📊','📈','📉'];
 const REACTS = ['👍','❤️','😂','😮','😢','🔥','⚾','🏆'];
 
-// ============================================================
-// CARGAR DATOS DESDE SUPABASE
-// ============================================================
 async function loadAllFromSupabase() {
   if (!sb) return;
   updateSbStatus('🔄 Cargando datos...', 'loading');
-  
   try {
     var { data: aData } = await sb.from('articles').select('*').order('created_at', { ascending: false });
     if (aData) articles = aData;
-    
     var { data: rData } = await sb.from('article_reads').select('*');
     if (rData) { reads = {}; rData.forEach(function(r) { reads[r.article_id] = r.count; }); }
-    
     var { data: bData } = await sb.from('banners').select('*').order('order_index');
     if (bData) {
       premBans = bData.filter(function(b) { return b.type === 'premium'; });
       stdBans = bData.filter(function(b) { return b.type === 'standard'; });
     }
-    
     var { data: vData } = await sb.from('visuals').select('*').order('created_at', { ascending: false });
     if (vData) visuals = vData;
-    
     var { data: mData } = await sb.from('media').select('*').order('created_at', { ascending: false });
     if (mData) medias = mData;
-    
     var { data: sData } = await sb.from('stories').select('*').order('created_at', { ascending: false });
     if (sData) stories = sData;
-    
     var { data: dData } = await sb.from('director_column').select('*').eq('id', 1).maybeSingle();
     if (dData) director = dData;
-    
     var { data: bsData } = await sb.from('box_scores').select('*').order('created_at', { ascending: false }).limit(1);
     if (bsData && bsData.length > 0) boxScore = bsData[0];
-    
     var { data: vipData } = await sb.from('settings').select('*').eq('id', 'vip').maybeSingle();
     if (vipData) vipCfg = vipData.config;
-    
     var { data: radData } = await sb.from('radio_tracks').select('*').order('created_at', { ascending: false });
     if (radData) radioTracks = radData;
-    
     var { data: chatCfg } = await sb.from('settings').select('*').eq('id', 'chat').maybeSingle();
     if (chatCfg) chatOn = chatCfg.config.active || false;
-    
     updateSbStatus('✅ Datos cargados desde Supabase', 'ok');
     renderAll();
   } catch(e) {
@@ -947,37 +872,24 @@ async function loadAllFromSupabase() {
   }
 }
 
-// ============================================================
-// ARCHIVOS - SUBIR A SUPABASE STORAGE
-// ============================================================
-async function handleFile(input, areaId, prevId, bucketType) {
+async function handleFile(input, areaId, prevId) {
   const file = input.files[0];
   if (!file) return;
   const area = document.getElementById(areaId);
   const prev = document.getElementById(prevId);
-  
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
-  
   area.querySelector('div:last-child').innerHTML = '<strong>⏳ Subiendo a Supabase...</strong>';
-  
   try {
     const fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    let bucket = bucketType;
-    if (bucketType === 'auto') {
-      bucket = file.type.startsWith('image/') ? 'images' : file.type.startsWith('audio/') ? 'audio' : 'video';
-    }
-    
+    const bucket = file.type.startsWith('image/') ? 'images' : file.type.startsWith('audio/') ? 'audio' : 'video';
     const { error: uploadError } = await sb.storage.from(bucket).upload(fileName, file, { upsert: true });
     if (uploadError) throw uploadError;
-    
     const { data } = sb.storage.from(bucket).getPublicUrl(fileName);
     const url = data.publicUrl;
-    
-    tmpFiles[input.id] = { url: url, name: file.name, type: file.type, bucket: bucket };
+    tmpFiles[input.id] = { url: url, name: file.name, type: file.type };
     area.classList.add('has-file');
     area.querySelector('div:last-child').innerHTML = '<strong>✅ ' + esc(file.name) + '</strong><br><small>Subido a Supabase Storage</small>';
     prev.style.display = 'block';
-    
     if (file.type.startsWith('image/')) prev.innerHTML = '<img src="' + url + '">';
     else if (file.type.startsWith('audio/')) prev.innerHTML = '<audio controls src="' + url + '"></audio>';
     else if (file.type.startsWith('video/')) prev.innerHTML = '<video controls src="' + url + '" style="max-height:200px;"></video>';
@@ -1008,51 +920,38 @@ function demoSq(t, c1, c2) {
 function openModal(id) { var m = document.getElementById(id); if (m) m.classList.add('active'); }
 function closeModal(id) { var m = document.getElementById(id); if (m) m.classList.remove('active'); }
 
-// ============================================================
-// DATOS DEMO
-// ============================================================
 async function loadDemoData() {
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
   if (!confirm('¿Cargar datos demo? Esto borrará los datos actuales.')) return;
-  
   updateSbStatus('🔄 Cargando datos demo...', 'loading');
-  
   try {
     await sb.from('articles').delete().neq('id', 0);
     await sb.from('article_reads').delete().neq('article_id', 0);
     await sb.from('banners').delete().neq('id', 0);
-    
     var demoArticles = [
       { type: 'cronica', title: 'Magallanes remonta en la novena', lead: 'Con dos outs y bases llenas, el Naranja logró remontada histórica.', content: '<p>Una noche mágica. El equipo demostró <strong>carácter y calidad</strong> en los momentos decisivos.</p><p>Los datos avanzados muestran un <em>wOBA de .412</em> en situaciones de alta presión.</p>', image_url: demoImg('Remonta', '#1e3a8a', '#fbbf24'), image_type: 'demo', author: 'Lic. Luis Aponte', tags: ['Magallanes', 'LVBP'], saber: { woba: 0.412, ops: 145, fip: 2.87, war: 5.2 }, comments: [{ id: 1, author: 'Carlos M.', emoji: '🔥', text: '¡Qué juego épico!', date: new Date(Date.now()-3600000).toISOString(), reacts: {'👍':5,'🔥':8} }] },
       { type: 'editorial', title: 'La sabermetría no miente', lead: 'Los números no entienden de pasiones.', content: '<p>Es momento de analizar fríamente las decisiones.</p>', image_url: demoImg('Editorial', '#000', '#fbbf24'), image_type: 'demo', author: 'Lic. Luis Aponte', tags: ['Editorial'], saber: { woba: 0.328, ops: 118, fip: 3.92, war: 3.1 }, comments: [] },
       { type: 'noticia', title: 'Refuerzo extranjero llega', lead: 'El pitcher dominicano se incorpora al roster.', content: '<p>El refuerzo llega con <strong>credenciales impresionantes</strong>.</p>', image_url: demoImg('Refuerzo', '#b91c1c', '#000'), image_type: 'demo', author: 'Redacción', tags: ['Fichajes'], saber: { fip: 2.87, war: 2.4 }, comments: [] }
     ];
-    
     var { data: insertedArticles, error } = await sb.from('articles').insert(demoArticles).select();
     if (error) throw error;
-    
     var demoReads = insertedArticles.map(function(a, i) {
       return { article_id: a.id, count: [1247, 834, 521][i] };
     });
     await sb.from('article_reads').insert(demoReads);
-    
     var demoBanners = [
       { type: 'premium', title: 'Cerveza Polar', text: 'La cerveza de Venezuela', link: '#', image_url: demoImg('Cerveza Polar', '#fbbf24', '#b91c1c'), order_index: 0 },
       { type: 'premium', title: 'Banco Provincial', text: 'Tu banco de confianza', link: '#', image_url: demoImg('Provincial', '#003366', '#fbbf24'), order_index: 1 },
       { type: 'standard', title: 'Restaurante La Taberna', text: 'La mejor comida', link: '#', image_url: demoImg('La Taberna', '#1e3a8a', '#fbbf24'), order_index: 0 }
     ];
     await sb.from('banners').insert(demoBanners);
-    
     await sb.from('director_column').upsert({ id: 1, title: 'El Magallanes y su identidad', content: 'Más que un equipo, el Naranja es una institución que representa la pasión de toda una ciudad.' });
-    
     await sb.from('box_scores').insert({
       home_team: 'Navegantes', away_team: 'Cardenales',
       scores: { home: [0,2,0,1,0,3,0,0,1], away: [1,0,0,2,0,0,1,0,0] },
       totals: { home: {r:7,h:12,e:1}, away: {r:4,h:8,e:2} }
     });
-    
     await sb.from('settings').upsert({ id: 'vip', config: { count: 127, wa: '584141234567', group: '', payInst: 'Pago Móvil: 0414-1234567\nBanco: Provincial\nCédula: V-12345678' } });
-    
     updateSbStatus('✅ Datos demo cargados', 'ok');
     await loadAllFromSupabase();
     alert('✅ Datos demo cargados en Supabase');
@@ -1066,7 +965,6 @@ async function loadDemoData() {
 async function clearAllData() {
   if (!confirm('¿Borrar TODO de Supabase?')) return;
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
-  
   try {
     await sb.from('articles').delete().neq('id', 0);
     await sb.from('article_reads').delete().neq('article_id', 0);
@@ -1078,13 +976,11 @@ async function clearAllData() {
     await sb.from('box_scores').delete().neq('id', 0);
     await sb.from('radio_tracks').delete().neq('id', 0);
     await sb.from('settings').delete().neq('id', '');
-    
     articles = []; visuals = []; medias = []; stories = [];
     director = null; boxScore = null;
     chatMsgs = []; chatOn = false;
     paredon = []; premBans = []; stdBans = [];
     radioTracks = []; reads = {};
-    
     await loadAllFromSupabase();
     alert('✅ Todo borrado de Supabase');
   } catch(e) {
@@ -1092,9 +988,6 @@ async function clearAllData() {
   }
 }
 
-// ============================================================
-// AUTH - CON NUEVA CONTRASEÑA
-// ============================================================
 function openCMS() {
   if (curUser) { openModal('cmsModal'); renderCMS(); }
   else {
@@ -1108,7 +1001,6 @@ function handleLogin(e) {
   e.preventDefault();
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
-  
   if (user === 'admin' && pass === 'luis 77 magallanes') {
     curUser = 'admin';
     closeModal('authModal');
@@ -1142,9 +1034,6 @@ function showTab(name, btn) {
   }
 }
 
-// ============================================================
-// EDITOR
-// ============================================================
 function execCmd(cmd, val) {
   document.execCommand(cmd, false, val || null);
   document.getElementById('artContent').focus();
@@ -1163,14 +1052,12 @@ function setArtType(t, btn) {
 
 async function publishArticle() {
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
-  
   var title = document.getElementById('artTitle').value.trim();
   var lead = document.getElementById('artLead').value.trim();
   var content = document.getElementById('artContent').innerHTML.trim();
   var author = document.getElementById('artAuthor').value.trim() || 'Redacción';
   var tags = document.getElementById('artTags').value.trim();
   var imgUrl = document.getElementById('artImgUrl').value.trim();
-  
   var saber = {
     woba: parseFloat(document.getElementById('artWoba').value) || null,
     ops: parseInt(document.getElementById('artOps').value) || null,
@@ -1180,17 +1067,12 @@ async function publishArticle() {
     la: parseFloat(document.getElementById('artLa').value) || null
   };
   var hasSaber = Object.values(saber).some(function(v) { return v !== null; });
-  
   if (!title || !content || content === '<br>') { document.getElementById('artStatus').innerHTML = '<div class="err">Completa título y contenido</div>'; return; }
-
   var finalImg = null, imgType = 'none';
   if (tmpFiles.artImg) { finalImg = tmpFiles.artImg.url; imgType = 'file'; }
   else if (imgUrl) { finalImg = imgUrl; imgType = 'url'; }
-
   var tagsArr = tags ? tags.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t; }) : [];
-
   document.getElementById('artStatus').innerHTML = '<div class="info">⏳ Guardando en Supabase...</div>';
-
   try {
     if (editId) {
       var { error } = await sb.from('articles').update({
@@ -1211,7 +1093,6 @@ async function publishArticle() {
       await sb.from('article_reads').upsert({ article_id: data.id, count: 0 });
       document.getElementById('artStatus').innerHTML = '<div class="ok">✅ Publicado en Supabase</div>';
     }
-
     document.getElementById('artTitle').value = '';
     document.getElementById('artLead').value = '';
     document.getElementById('artContent').innerHTML = '';
@@ -1220,7 +1101,6 @@ async function publishArticle() {
     document.getElementById('artImgUrl').value = '';
     ['artWoba','artOps','artFip','artWar','artEv','artLa'].forEach(function(id) { document.getElementById(id).value = ''; });
     clearFile('artImgArea', 'artImgPrev', 'artImg');
-    
     await loadAllFromSupabase();
     renderCMSArticles();
   } catch(e) {
@@ -1282,9 +1162,7 @@ function renderArticles() {
   document.getElementById('countEditorial').textContent = counts.editorial;
   document.getElementById('countNoticia').textContent = counts.noticia;
   document.getElementById('totalReads').textContent = getTotalReads().toLocaleString();
-  
   if (articles.length === 0) { document.getElementById('articlesList').innerHTML = '<p style="color:#737373;text-align:center;padding:2rem;">No hay artículos</p>'; return; }
-  
   document.getElementById('articlesList').innerHTML = articles.map(function(a) {
     var typeLbl = a.type === 'cronica' ? 'Crónica' : a.type === 'editorial' ? 'Editorial' : 'Noticia';
     var r = getRead(a.id);
@@ -1298,8 +1176,8 @@ function renderArticles() {
     if (a.tags && a.tags.length > 0) {
       tagsHtml = '<div style="margin-bottom:1rem;">' + a.tags.map(function(t) { return '<span style="display:inline-block;background:#f7f7f5;color:#404040;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;text-transform:uppercase;margin-right:0.25rem;border:1px solid #e5e5e5;">#' + esc(t) + '</span>'; }).join('') + '</div>';
     }
-    var metaHtml = '<div style="display:flex;gap:1rem;font-size:0.75rem;color:#737373;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem;flex-wrap:wrap;"><span>✍️ ' + esc(a.author || 'Redacción') + '</span><span>📅 ' + new Date(a.created_at).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'}) + '</span><span class="read-counter">👁️ ' + r.toLocaleString() + ' lecturas</span></div>';
-    
+    var created = a.created_at || a.created;
+    var metaHtml = '<div style="display:flex;gap:1rem;font-size:0.75rem;color:#737373;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem;flex-wrap:wrap;"><span>✍️ ' + esc(a.author || 'Redacción') + '</span><span>📅 ' + new Date(created).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'}) + '</span><span class="read-counter">👁️ ' + r.toLocaleString() + ' lecturas</span></div>';
     return '<div id="article-' + a.id + '" style="border-bottom:2px solid #e5e5e5;padding:2rem 0;" data-type="' + a.type + '">' +
       '<div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:#d4a017;font-weight:700;margin-bottom:0.5rem;">' + typeLbl + '</div>' +
       '<h3 style="font-size:clamp(1.5rem,4vw,2rem);font-weight:900;line-height:1.15;margin-bottom:0.75rem;">' + esc(a.title) + '</h3>' +
@@ -1313,29 +1191,23 @@ function renderArticles() {
 async function openFullArticle(id) {
   var a = articles.find(function(x) { return x.id === id; });
   if (!a) return;
-  
   if (sb) {
     var currentReads = reads[a.id] || 0;
     await sb.from('article_reads').upsert({ article_id: a.id, count: currentReads + 1 });
     reads[a.id] = currentReads + 1;
   }
-  
   document.getElementById('fullArtTitle').textContent = a.title;
   var typeLbl = a.type === 'cronica' ? 'Crónica' : a.type === 'editorial' ? 'Editorial' : 'Noticia';
   var r = getRead(a.id);
-  
   var img = a.image_url || a.img;
   var imgType = a.image_type || 'demo';
   var imgHtml = '';
   if (img && imgType !== 'embed') imgHtml = '<img src="' + img + '" style="width:100%;max-height:500px;object-fit:cover;margin-bottom:2rem;">';
-  
   var leadHtml = a.lead ? '<p class="article-lead">' + esc(a.lead) + '</p>' : '';
-  
   var tagsHtml = '';
   if (a.tags && a.tags.length > 0) {
     tagsHtml = '<div style="margin-bottom:2rem;">' + a.tags.map(function(t) { return '<span style="display:inline-block;background:#f7f7f5;color:#404040;padding:0.3rem 0.8rem;font-size:0.8rem;font-weight:700;text-transform:uppercase;margin-right:0.25rem;border:1px solid #e5e5e5;">#' + esc(t) + '</span>'; }).join('') + '</div>';
   }
-  
   var saberHtml = '';
   if (a.saber && Object.values(a.saber).some(function(v) { return v !== null; })) {
     saberHtml = '<div class="saber-panel"><div class="saber-title">📊 Datos Sabermétricos</div><div class="saber-grid">';
@@ -1347,7 +1219,6 @@ async function openFullArticle(id) {
     if (a.saber.la !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">Launch Ang.</div><div class="saber-value">' + a.saber.la + '°</div></div>';
     saberHtml += '</div></div>';
   }
-  
   var shareUrl = encodeURIComponent(location.href + '#article-' + a.id);
   var shareTxt = encodeURIComponent(a.title + ' - La Taberna del Magallanes');
   var shareHtml = '<div class="share-bar"><span style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#404040;margin-right:0.5rem;">📲 Compartir:</span>' +
@@ -1355,18 +1226,15 @@ async function openFullArticle(id) {
     '<button class="share-btn fb" onclick="window.open(\'https://www.facebook.com/sharer/sharer.php?u=\' + \'' + shareUrl + '\', \'_blank\')">📘 Facebook</button>' +
     '<button class="share-btn tw" onclick="window.open(\'https://twitter.com/intent/tweet?text=\' + \'' + shareTxt + '&url=\' + \'' + shareUrl + '\', \'_blank\')">🐦 Twitter</button>' +
     '<button class="share-btn" onclick="copyLink(' + a.id + ')">📋 Copiar</button></div>';
-  
   var commentsHtml = renderComments(a);
-  var metaHtml = '<div style="display:flex;gap:1rem;font-size:0.75rem;color:#737373;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem;flex-wrap:wrap;"><span>✍️ ' + esc(a.author || 'Redacción') + '</span><span>📅 ' + new Date(a.created_at).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'}) + '</span><span class="read-counter">👁️ ' + r.toLocaleString() + ' lecturas</span></div>';
-  
+  var created = a.created_at || a.created;
+  var metaHtml = '<div style="display:flex;gap:1rem;font-size:0.75rem;color:#737373;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem;flex-wrap:wrap;"><span>✍️ ' + esc(a.author || 'Redacción') + '</span><span>📅 ' + new Date(created).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'}) + '</span><span class="read-counter">👁️ ' + r.toLocaleString() + ' lecturas</span></div>';
   var waBanner = '<div style="background:linear-gradient(135deg,#25d366 0%,#1ebe57 100%);color:#fff;padding:1.5rem;text-align:center;border-radius:8px;margin:2rem 0;"><h4 style="margin-bottom:0.5rem;">📱 ¿Quieres más contenido como este?</h4><p style="margin-bottom:1rem;">Únete a nuestro canal de WhatsApp</p><a href="' + WA_CHANNEL + '" target="_blank" style="display:inline-block;background:#fff;color:#25d366;padding:0.75rem 1.5rem;font-weight:700;text-decoration:none;text-transform:uppercase;border-radius:4px;">📲 UNIRME AL CANAL</a></div>';
-  
   document.getElementById('fullArtBody').innerHTML = 
     '<div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:#d4a017;font-weight:700;margin-bottom:0.5rem;">' + typeLbl + '</div>' +
     tagsHtml + imgHtml + leadHtml +
     '<div style="font-size:1.1rem;line-height:1.8;color:#404040;">' + a.content + '</div>' +
     saberHtml + waBanner + shareHtml + commentsHtml;
-  
   openModal('articleFullModal');
   document.getElementById('totalReads').textContent = getTotalReads().toLocaleString();
 }
@@ -1412,11 +1280,9 @@ async function addComment(aid) {
   if (!txt) { alert('Escribe tu comentario'); return; }
   if (!a.comments) a.comments = [];
   a.comments.unshift({ id: Date.now(), author: auth, emoji: emo || '💬', text: txt, date: new Date().toISOString(), reacts: {} });
-  
   if (sb) {
-    await sb.from('articles').update({ comments: a.comments }).eq('id', aid);
+    try { await sb.from('articles').update({ comments: a.comments }).eq('id', aid); } catch(e) {}
   }
-  
   openFullArticle(aid);
 }
 
@@ -1427,11 +1293,9 @@ async function toggleReact(aid, cid, emoji) {
   if (!c) return;
   if (!c.reacts) c.reacts = {};
   c.reacts[emoji] = (c.reacts[emoji] || 0) + 1;
-  
   if (sb) {
-    await sb.from('articles').update({ comments: a.comments }).eq('id', aid);
+    try { await sb.from('articles').update({ comments: a.comments }).eq('id', aid); } catch(e) {}
   }
-  
   openFullArticle(aid);
 }
 
@@ -1474,9 +1338,6 @@ function filterArticles(type, btn) {
 function getRead(id) { return reads[id] || 0; }
 function getTotalReads() { return Object.values(reads).reduce(function(s, n) { return s + n; }, 0); }
 
-// ============================================================
-// BANNERS
-// ============================================================
 function switchBan(type, btn) {
   curBanType = type;
   document.getElementById('btnPrem').classList.remove('active');
@@ -1489,7 +1350,6 @@ function switchBan(type, btn) {
 
 async function uploadBanner() {
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
-  
   var title = document.getElementById('banTitle').value.trim();
   var text = document.getElementById('banText').value.trim();
   var link = document.getElementById('banLink').value.trim();
@@ -1507,9 +1367,7 @@ async function uploadBanner() {
   }
   var jingle = null;
   if (curBanType === 'prem' && tmpFiles.banJingle) jingle = tmpFiles.banJingle.url;
-  
   document.getElementById('banStatus').innerHTML = '<div class="info">⏳ Subiendo a Supabase...</div>';
-  
   try {
     var { error } = await sb.from('banners').insert({
       type: curBanType === 'prem' ? 'premium' : 'standard',
@@ -1518,7 +1376,6 @@ async function uploadBanner() {
       order_index: list.length
     });
     if (error) throw error;
-    
     document.getElementById('banStatus').innerHTML = '<div class="ok">✅ Banner subido a Supabase</div>';
     document.getElementById('banTitle').value = '';
     document.getElementById('banText').value = '';
@@ -1526,7 +1383,6 @@ async function uploadBanner() {
     document.getElementById('banImgUrl').value = '';
     clearFile('banImgArea', 'banImgPrev', 'banImg');
     clearFile('banJingleArea', 'banJinglePrev', 'banJingle');
-    
     await loadAllFromSupabase();
   } catch(e) {
     document.getElementById('banStatus').innerHTML = '<div class="err">❌ Error: ' + e.message + '</div>';
@@ -1552,11 +1408,7 @@ async function delBan(id) {
   await loadAllFromSupabase();
 }
 
-function renderCars() {
-  renderCar('prem');
-  renderCar('std');
-  startCars();
-}
+function renderCars() { renderCar('prem'); renderCar('std'); startCars(); }
 
 function renderCar(type) {
   var list = type === 'prem' ? premBans : stdBans;
@@ -1639,9 +1491,6 @@ function resetCar(type) {
   }
 }
 
-// ============================================================
-// BOX SCORE
-// ============================================================
 function renderBoxScore() {
   if (!boxScore) { document.getElementById('boxScoreBody').innerHTML = '<tr><td colspan="13" style="padding:2rem;color:#737373;">Sin datos</td></tr>'; return; }
   var s = boxScore.scores;
@@ -1691,9 +1540,6 @@ async function saveBoxScore() {
   }
 }
 
-// ============================================================
-// STORIES
-// ============================================================
 function renderStories() {
   if (stories.length === 0) { document.getElementById('storiesContainer').innerHTML = '<p style="color:#737373;">No hay stories</p>'; return; }
   document.getElementById('storiesContainer').innerHTML = stories.map(function(s) {
@@ -1722,13 +1568,9 @@ async function publishStory() {
   }
 }
 
-// ============================================================
-// DIRECTOR
-// ============================================================
 function renderDirector() {
   if (!director) { document.getElementById('directorColumn').innerHTML = '<p style="color:#737373;">No hay columna</p>'; return; }
-  var photoHtml = director.photo_url ? '<img src="' + director.photo_url + '" style="width:120px;height:120px;border-radius:50%;object-fit:cover;float:right;margin-left:1rem;border:3px solid #fbbf24;">' : '';
-  document.getElementById('directorColumn').innerHTML = photoHtml + '<h4 style="font-size:1.5rem;font-weight:700;margin-bottom:0.75rem;">' + esc(director.title) + '</h4><p style="font-size:1.05rem;color:#404040;line-height:1.7;">' + esc(director.content) + '</p><p style="font-size:0.8rem;color:#737373;margin-top:1rem;font-style:italic;clear:both;">— Lic. Luis Aponte, Director</p>';
+  document.getElementById('directorColumn').innerHTML = '<h4 style="font-size:1.5rem;font-weight:700;margin-bottom:0.75rem;">' + esc(director.title) + '</h4><p style="font-size:1.05rem;color:#404040;line-height:1.7;">' + esc(director.content) + '</p><p style="font-size:0.8rem;color:#737373;margin-top:1rem;font-style:italic;">— Lic. Luis Aponte, Director</p>';
 }
 
 async function saveDirector() {
@@ -1745,9 +1587,6 @@ async function saveDirector() {
   }
 }
 
-// ============================================================
-// VISUALES
-// ============================================================
 function setVisType(t, btn) {
   curVisType = t;
   btn.parentElement.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -1799,9 +1638,6 @@ async function publishVisual() {
   }
 }
 
-// ============================================================
-// MULTIMEDIA
-// ============================================================
 function setMedType(t, btn) {
   curMedType = t;
   btn.parentElement.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -1863,9 +1699,6 @@ async function publishMedia() {
   }
 }
 
-// ============================================================
-// VIP
-// ============================================================
 function togglePay() {
   var plan = document.querySelector('input[name="vipPlan"]:checked').value;
   document.getElementById('paySection').style.display = plan === 'free' ? 'none' : 'block';
@@ -1892,14 +1725,12 @@ async function submitVIP(e) {
   var payMethod = document.getElementById('selPayMethod').value;
   var planNames = { free: 'Boletín Gratis', vip: 'Círculo VIP ($5/mes)', palco: 'Palco del Director ($50/año)' };
   var payNames = { pagomovil: 'Pago Móvil', zelle: 'Zelle', binance: 'Binance', paypal: 'PayPal' };
-  
   var msg = '🌟 *NUEVA SUSCRIPCIÓN VIP*\n\n';
   msg += '👤 *Nombre:* ' + name + '\n';
   msg += '📧 *Email:* ' + email + '\n';
   msg += '📱 *WhatsApp:* ' + phone + '\n';
   msg += '🌎 *País:* ' + country + '\n\n';
   msg += '💎 *Plan:* ' + planNames[plan] + '\n';
-  
   if (plan !== 'free') {
     msg += '\n💳 *Método:* ' + (payNames[payMethod] || 'No seleccionado') + '\n';
     msg += '🔢 *Referencia:* ' + document.getElementById('payRef').value + '\n';
@@ -1907,10 +1738,8 @@ async function submitVIP(e) {
     msg += '📅 *Fecha:* ' + document.getElementById('payDate').value + '\n';
   }
   msg += '\n_Enviado desde La Taberna del Magallanes_';
-  
   var waNum = vipCfg.wa || '584141234567';
   window.open('https://wa.me/' + waNum + '?text=' + encodeURIComponent(msg), '_blank');
-  
   if (sb) {
     try {
       await sb.from('vip_subscribers').insert({
@@ -1921,14 +1750,12 @@ async function submitVIP(e) {
       });
     } catch(e) { console.error(e); }
   }
-  
   vipCfg.count++;
   document.getElementById('vipCount').textContent = vipCfg.count;
   if (sb) {
-    await sb.from('settings').upsert({ id: 'vip', config: vipCfg });
+    try { await sb.from('settings').upsert({ id: 'vip', config: vipCfg }); } catch(e) {}
   }
   closeModal('vipModal');
-  
   if (plan !== 'free' && vipCfg.group) {
     document.getElementById('vipGroupAccess').style.display = 'block';
     document.getElementById('vipGroupBtn').href = vipCfg.group;
@@ -1969,9 +1796,6 @@ async function saveVIPConfig() {
   }
 }
 
-// ============================================================
-// ANALYTICS
-// ============================================================
 function renderAnalytics() {
   document.getElementById('statArticles').textContent = articles.length;
   document.getElementById('statReads').textContent = getTotalReads().toLocaleString();
@@ -1980,9 +1804,6 @@ function renderAnalytics() {
   document.getElementById('statVip').textContent = vipCfg.count;
 }
 
-// ============================================================
-// RADIO
-// ============================================================
 function renderRadList() {
   var el = document.getElementById('radList');
   if (!el) return;
@@ -2043,9 +1864,6 @@ function radPlay() {
 function radPrev() { if (radioTracks.length === 0) return; radIdx = (radIdx - 1 + radioTracks.length) % radioTracks.length; playRad(radIdx); }
 function radNext() { if (radioTracks.length === 0) return; radIdx = (radIdx + 1) % radioTracks.length; playRad(radIdx); }
 
-// ============================================================
-// CHAT
-// ============================================================
 function renderChat() {
   if (!chatOn) { document.getElementById('chatContainer').innerHTML = '<p style="color:#737373;font-style:italic;">💤 El chat está cerrado temporalmente.</p>'; return; }
   if (chatMsgs.length === 0) { document.getElementById('chatContainer').innerHTML = '<p style="color:#737373;">Sé el primero en comentar</p>'; return; }
@@ -2080,9 +1898,6 @@ function clearChat() {
   renderChat();
 }
 
-// ============================================================
-// PAREDÓN
-// ============================================================
 function renderParedon() {
   if (paredon.length === 0) { document.getElementById('paredonList').innerHTML = '<p style="color:#737373;text-align:center;padding:1rem;">Sé el primero en comentar</p>'; return; }
   document.getElementById('paredonList').innerHTML = paredon.map(function(c) {
@@ -2115,13 +1930,9 @@ function delPar(id) {
 
 function openAbout() { openModal('aboutModal'); }
 
-// ============================================================
-// RENDER
-// ============================================================
 function renderCMS() {
   var modeInfo = sb ? '<div class="ok">✅ <strong>Modo Supabase</strong> - Los datos se guardan en la nube</div>' : '<div class="warn">⚠️ <strong>Supabase no disponible</strong></div>';
   document.getElementById('storageMode').innerHTML = modeInfo;
-  
   renderCMSArticles();
   if (boxScore) {
     document.getElementById('homeTeam').value = boxScore.home_team;
@@ -2151,9 +1962,6 @@ function renderAll() {
 
 function esc(s) { if (!s) return ''; return String(s).replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
-// ============================================================
-// INICIALIZAR
-// ============================================================
 document.addEventListener('DOMContentLoaded', async function() {
   if (await initSupabase()) {
     await loadAllFromSupabase();
@@ -2171,13 +1979,3 @@ document.addEventListener('keydown', function(e) {
 
 </body>
 </html>
-
-
-              <script>
-                              localStorage.clear(); location.reload();
-
-
-              </script>
-                        </body>
-                        </html>
-                    
