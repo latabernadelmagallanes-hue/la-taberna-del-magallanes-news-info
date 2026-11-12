@@ -1,0 +1,12 @@
+{
+  "name": "La Taberna del Magallanes News",
+  "short_name": "La Taberna",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    { "src": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=192&h=192&fit=crop", "sizes": "192x192", "type": "image/png" },
+    { "src": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=512&h=512&fit=crop", "sizes": "512x512", "type": "image/png" }
+  ]
+}
