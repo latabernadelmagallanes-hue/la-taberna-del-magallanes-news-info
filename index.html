@@ -174,7 +174,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
       </div>
     </div>
     <nav style="display:flex;gap:0.25rem;flex-wrap:wrap;align-items:center;">
-      <a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" class="nav-wa">📱 WhatsApp</a>
+      <a href="#" class="nav-wa wa-channel-link" target="_blank">📱 WhatsApp</a>
       <button onclick="openAbout()" class="nav-btn">Acerca</button>
       <button onclick="openRadio()" class="nav-btn">📻 Radio</button>
       <button onclick="openVIP()" class="nav-btn">⭐ VIP</button>
@@ -187,7 +187,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
           <a href="#visual">📸 Fotoreportajes</a>
           <a href="#chat">💬 Chat</a>
           <a href="#paredon">🔥 Paredón</a>
-          <a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" style="background:#25d366;color:#fff;font-weight:700;">📱 Canal WhatsApp</a>
+          <a href="#" class="wa-channel-link" target="_blank" style="background:#25d366;color:#fff;font-weight:700;">📱 Canal WhatsApp</a>
         </div>
       </div>
       <button onclick="openCMS()" class="cms-btn">CMS</button>
@@ -207,7 +207,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 <div class="wa-banner">
   <h3>📱 ¡Únete a nuestro Canal de WhatsApp!</h3>
   <p>Recibe noticias, análisis sabermétricos y contenido exclusivo</p>
-  <a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" class="btn-wa-lg">📲 UNIRME AL CANAL</a>
+  <a href="#" class="btn-wa-lg wa-channel-link" target="_blank">📲 UNIRME AL CANAL</a>
 </div>
 
 <section class="section">
@@ -291,7 +291,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
     </div>
     <div style="margin-top:2rem;">
       <p style="margin-bottom:1rem;">📱 Síguenos en nuestro canal de WhatsApp</p>
-      <a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" class="btn-wa-lg">📲 UNIRME AL CANAL</a>
+      <a href="#" class="btn-wa-lg wa-channel-link" target="_blank">📲 UNIRME AL CANAL</a>
     </div>
   </div>
 </section>
@@ -310,7 +310,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
   <h2 class="section-title" style="border-bottom:3px solid #fbbf24;padding-bottom:0.5rem;display:inline-block;margin-bottom:1rem;">💬 Chat del Fanático</h2>
   <div id="chatContainer"></div>
   <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;">
-    <input type="text" id="chatInput" placeholder="Tu nombre" style="flex:1;margin-bottom:0;min-width:200px;">
+    <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." style="flex:1;margin-bottom:0;min-width:200px;">
     <button onclick="sendChat()" class="btn-black" style="width:auto;">Enviar</button>
   </div>
 </section>
@@ -328,12 +328,12 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
   <div class="footer-title">La Taberna del Magallanes News</div>
   <p style="font-size:0.875rem;color:#d4d4d4;margin-bottom:0.75rem;">Fundado por Lic. Luis Aponte · © 2026</p>
   <div style="margin:1rem 0;">
-    <a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" class="btn-wa-lg">📲 ÚNETE AL CANAL</a>
+    <a href="#" class="btn-wa-lg wa-channel-link" target="_blank">📲 ÚNETE AL CANAL</a>
   </div>
   <button onclick="openCMS()" class="btn-outline" style="color:#fff;border-color:#fff;">CMS</button>
 </footer>
 
-<a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" class="wa-float" title="Canal de WhatsApp">📱</a>
+<a href="#" class="wa-float wa-channel-link" target="_blank" title="Canal de WhatsApp">📱</a>
 
 <!-- MODAL AUTH -->
 <div id="authModal" class="modal">
@@ -346,8 +346,8 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
       <div id="connectionInfo"></div>
       <div id="authError"></div>
       <form onsubmit="handleLogin(event)">
-        <label>Usuario</label>
-        <input type="text" id="loginUser" required placeholder="Usuario">
+        <label>Correo electrónico</label>
+        <input type="email" id="loginUser" required placeholder="Correo del administrador">
         <label>Contraseña</label>
         <input type="password" id="loginPass" required placeholder="Contraseña">
         <button type="submit" class="btn-black" style="width:100%;">Entrar</button>
@@ -574,7 +574,12 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
       </div>
 
       <div id="tabVip" class="tab-content">
-        <div class="info">⭐ Configuración VIP</div>
+        <div class="info">⭐ Configuración VIP y Canal de WhatsApp</div>
+        <h4 style="margin:1rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">📱 Canal de WhatsApp</h4>
+        <label>🔗 Enlace del Canal de WhatsApp</label>
+        <input type="text" id="waChannelInput" placeholder="https://whatsapp.com/channel/...">
+        <p style="font-size:0.75rem;color:#737373;margin:-0.75rem 0 1rem 0;">Este enlace se actualizará en todos los botones y banners del sitio.</p>
+        <h4 style="margin:1rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">💎 Configuración VIP</h4>
         <label>📱 WhatsApp del Director</label>
         <input type="text" id="dirWhatsapp" placeholder="584141234567" value="584141234567">
         <label>🔗 Enlace del Grupo VIP</label>
@@ -583,7 +588,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <textarea id="vipPayInst" rows="4" placeholder="Pago Móvil: 0414-1234567&#10;Banco: Provincial"></textarea>
         <label>📊 Contador VIP</label>
         <input type="number" id="vipCountInput" placeholder="0">
-        <button onclick="saveVIPConfig()" class="btn-black" style="width:100%;">💾 Guardar</button>
+        <button onclick="saveVIPConfig()" class="btn-black" style="width:100%;">💾 Guardar Todo</button>
         <div id="vipStatus" style="margin-top:1rem;"></div>
       </div>
 
@@ -689,11 +694,11 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
             <label>Datos del pago</label>
             <div id="payInstBox" style="background:#fff;padding:0.75rem;border-left:3px solid #fbbf24;margin-bottom:1rem;white-space:pre-wrap;font-size:0.85rem;"></div>
             <label>Referencia *</label>
-            <input type="text" id="payRef" required>
+            <input type="text" id="payRef">
             <label>Monto *</label>
-            <input type="text" id="payAmount" required>
+            <input type="text" id="payAmount">
             <label>Fecha *</label>
-            <input type="date" id="payDate" required>
+            <input type="date" id="payDate">
           </div>
         </div>
         <button type="submit" class="btn-wa" style="margin-top:1rem;padding:1rem;">💬 SUSCRIBIRME POR WHATSAPP</button>
@@ -716,7 +721,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
       </div>
       <div style="margin-top:1rem;">
         <p style="margin-bottom:0.5rem;">📱 También puedes seguirnos en nuestro canal:</p>
-        <a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" class="btn-wa-lg">📲 CANAL DE WHATSAPP</a>
+        <a href="#" class="btn-wa-lg wa-channel-link" target="_blank">📲 CANAL DE WHATSAPP</a>
       </div>
       <button onclick="closeModal('vipOkModal')" class="btn-outline" style="width:100%;margin-top:1rem;">Cerrar</button>
     </div>
@@ -733,7 +738,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
       <p><strong>Fundación:</strong> 2026 por Lic. Luis Aponte</p>
       <p style="margin-top:0.5rem;"><strong>Misión:</strong> Periodismo deportivo independiente con rigor sabermétrico.</p>
       <p style="margin-top:1rem;"><strong>📱 Síguenos en WhatsApp:</strong></p>
-      <a href="https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31" target="_blank" class="btn-wa" style="margin-top:0.5rem;">📲 Canal de WhatsApp</a>
+      <a href="#" class="btn-wa wa-channel-link" style="margin-top:0.5rem;" target="_blank">📲 Canal de WhatsApp</a>
     </div>
   </div>
 </div>
@@ -760,17 +765,21 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 
 <script>
 // ============================================================
-// CONFIGURACIÓN SUPABASE - UNA SOLA DECLARACIÓN
+// CONFIGURACIÓN SUPABASE
 // ============================================================
-const SUPABASE_URL = 'https://jwizuyipoymqzvuirnb.supabase.co';
+const SUPABASE_URL = 'https://jwizuyoipoymqzvuirnb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3aXp1eW9pcG95bXF6dnVpcm5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxMTU5ODMsImV4cCI6MjEwNzY5MTk4M30.zJCH7t3FkmyNAwxnt6pMGFB-leiANwgdt0QA6wwVMtU';
-const WA_CHANNEL = 'https://whatsapp.com/channel/0029VbCW8QNBPzjZAmTgIS31';
+
+// Enlace del canal de WhatsApp (editable desde CMS)
+let WA_CHANNEL = 'https://whatsapp.com/channel/0029VbEUnoR8Pgs8zcNAmv0R';
 
 let sb = null;
 
 async function initSupabase() {
   try {
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { persistSession: false }
+    });
     var { error } = await sb.from('articles').select('id').limit(1);
     if (error) {
       updateSbStatus('❌ Error: ' + error.message, 'err');
@@ -807,6 +816,13 @@ async function testConnection() {
   }
 }
 
+// Actualiza todos los enlaces del canal de WhatsApp en el DOM
+function updateWaChannelLinks() {
+  document.querySelectorAll('.wa-channel-link').forEach(function(el) {
+    el.setAttribute('href', WA_CHANNEL);
+  });
+}
+
 let curUser = null;
 let curArtType = 'cronica';
 let curVisType = 'fotorreportaje';
@@ -819,7 +835,7 @@ let medias = [];
 let stories = [];
 let director = null;
 let boxScore = null;
-let vipCfg = { count: 0, wa: '584141234567', group: '', payInst: '' };
+let vipCfg = { count: 0, wa: '584141234567', group: '', payInst: '', waChannel: 'https://whatsapp.com/channel/0029VbEUnoR8Pgs8zcNAmv0R' };
 let chatMsgs = [];
 let chatOn = false;
 let paredon = [];
@@ -859,12 +875,20 @@ async function loadAllFromSupabase() {
     var { data: bsData } = await sb.from('box_scores').select('*').order('created_at', { ascending: false }).limit(1);
     if (bsData && bsData.length > 0) boxScore = bsData[0];
     var { data: vipData } = await sb.from('settings').select('*').eq('id', 'vip').maybeSingle();
-    if (vipData) vipCfg = vipData.config;
+    if (vipData && vipData.config) {
+      vipCfg = vipData.config;
+      // Si existe el enlace guardado del canal, actualizarlo
+      if (vipCfg.waChannel && vipCfg.waChannel.trim() !== '') {
+        WA_CHANNEL = vipCfg.waChannel;
+      }
+    }
     var { data: radData } = await sb.from('radio_tracks').select('*').order('created_at', { ascending: false });
     if (radData) radioTracks = radData;
     var { data: chatCfg } = await sb.from('settings').select('*').eq('id', 'chat').maybeSingle();
     if (chatCfg) chatOn = chatCfg.config.active || false;
     updateSbStatus('✅ Datos cargados desde Supabase', 'ok');
+    // Actualizar enlaces del canal en todo el sitio
+    updateWaChannelLinks();
     renderAll();
   } catch(e) {
     console.error('Error cargando datos:', e);
@@ -951,7 +975,7 @@ async function loadDemoData() {
       scores: { home: [0,2,0,1,0,3,0,0,1], away: [1,0,0,2,0,0,1,0,0] },
       totals: { home: {r:7,h:12,e:1}, away: {r:4,h:8,e:2} }
     });
-    await sb.from('settings').upsert({ id: 'vip', config: { count: 127, wa: '584141234567', group: '', payInst: 'Pago Móvil: 0414-1234567\nBanco: Provincial\nCédula: V-12345678' } });
+    await sb.from('settings').upsert({ id: 'vip', config: { count: 127, wa: '584141234567', group: '', payInst: 'Pago Móvil: 0414-1234567\nBanco: Provincial\nCédula: V-12345678', waChannel: 'https://whatsapp.com/channel/0029VbEUnoR8Pgs8zcNAmv0R' } });
     updateSbStatus('✅ Datos demo cargados', 'ok');
     await loadAllFromSupabase();
     alert('✅ Datos demo cargados en Supabase');
@@ -997,21 +1021,31 @@ function openCMS() {
   }
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
-  const user = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value;
-  if (user === 'admin' && pass === 'luis 77 magallanes') {
-    curUser = 'admin';
-    closeModal('authModal');
-    openModal('cmsModal');
-    renderCMS();
-  } else {
-    document.getElementById('authError').innerHTML = '<div class="err">Usuario o contraseña incorrectos</div>';
+  if (!sb) {
+    document.getElementById('authError').innerHTML = '<div class="err">Supabase no está conectado</div>';
+    return;
   }
+  const email = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
+  if (error) {
+    document.getElementById('authError').innerHTML = '<div class="err">Correo o contraseña incorrectos</div>';
+    return;
+  }
+  curUser = data.user.email;
+  document.getElementById('authError').innerHTML = '';
+  closeModal('authModal');
+  openModal('cmsModal');
+  renderCMS();
 }
 
-function logout() { curUser = null; closeModal('cmsModal'); }
+async function logout() {
+  if (sb) await sb.auth.signOut();
+  curUser = null;
+  closeModal('cmsModal');
+}
 
 function showTab(name, btn) {
   document.querySelectorAll('#cmsModal .tab-content').forEach(function(t) { t.classList.remove('active'); });
@@ -1118,6 +1152,7 @@ function editArticle(id) {
   document.getElementById('artContent').innerHTML = a.content;
   document.getElementById('artAuthor').value = a.author || '';
   document.getElementById('artTags').value = (a.tags || []).join(', ');
+  document.getElementById('artImgUrl').value = a.image_url || '';
   if (a.saber) {
     document.getElementById('artWoba').value = a.saber.woba || '';
     document.getElementById('artOps').value = a.saber.ops || '';
@@ -1701,7 +1736,11 @@ async function publishMedia() {
 
 function togglePay() {
   var plan = document.querySelector('input[name="vipPlan"]:checked').value;
-  document.getElementById('paySection').style.display = plan === 'free' ? 'none' : 'block';
+  var isPaid = plan !== 'free';
+  document.getElementById('paySection').style.display = isPaid ? 'block' : 'none';
+  ['payRef', 'payAmount', 'payDate'].forEach(function(id) {
+    document.getElementById(id).required = isPaid;
+  });
 }
 
 function selectPay(method, el) {
@@ -1775,6 +1814,7 @@ function subscribeVIP(plan) {
 }
 
 function loadVIPCfg() {
+  document.getElementById('waChannelInput').value = vipCfg.waChannel || WA_CHANNEL;
   document.getElementById('dirWhatsapp').value = vipCfg.wa || '';
   document.getElementById('vipGroupLink').value = vipCfg.group || '';
   document.getElementById('vipPayInst').value = vipCfg.payInst || '';
@@ -1783,6 +1823,13 @@ function loadVIPCfg() {
 
 async function saveVIPConfig() {
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
+  // Guardar enlace del canal de WhatsApp
+  var newChannel = document.getElementById('waChannelInput').value.trim();
+  if (newChannel) {
+    vipCfg.waChannel = newChannel;
+    WA_CHANNEL = newChannel;
+    updateWaChannelLinks();
+  }
   vipCfg.wa = document.getElementById('dirWhatsapp').value.trim();
   vipCfg.group = document.getElementById('vipGroupLink').value.trim();
   vipCfg.payInst = document.getElementById('vipPayInst').value;
@@ -1790,7 +1837,7 @@ async function saveVIPConfig() {
   document.getElementById('vipCount').textContent = vipCfg.count;
   try {
     await sb.from('settings').upsert({ id: 'vip', config: vipCfg });
-    document.getElementById('vipStatus').innerHTML = '<div class="ok">✅ Configuración VIP guardada en Supabase</div>';
+    document.getElementById('vipStatus').innerHTML = '<div class="ok">✅ Configuración guardada en Supabase (canal + VIP)</div>';
   } catch(e) {
     document.getElementById('vipStatus').innerHTML = '<div class="err">❌ Error: ' + e.message + '</div>';
   }
@@ -1874,8 +1921,8 @@ function renderChat() {
 
 function sendChat() {
   var input = document.getElementById('chatInput');
-  if (!input.value.trim()) { alert('Escribe tu nombre'); return; }
-  chatMsgs.push({ name: input.value, msg: input.value, date: new Date().toISOString() });
+  if (!input.value.trim()) { alert('Escribe tu mensaje'); return; }
+  chatMsgs.push({ name: 'Tabernero', msg: input.value.trim(), date: new Date().toISOString() });
   input.value = '';
   renderChat();
 }
@@ -1963,10 +2010,14 @@ function renderAll() {
 function esc(s) { if (!s) return ''; return String(s).replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 document.addEventListener('DOMContentLoaded', async function() {
+  // Aplicar enlace por defecto inmediatamente
+  updateWaChannelLinks();
   if (await initSupabase()) {
     await loadAllFromSupabase();
+    console.log('✅ La Taberna inicializado con Supabase');
+  } else {
+    console.warn('⚠️ No se pudo conectar con Supabase');
   }
-  console.log('✅ La Taberna inicializado con Supabase');
 });
 
 document.addEventListener('keydown', function(e) {
