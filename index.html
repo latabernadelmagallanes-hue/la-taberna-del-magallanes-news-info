@@ -207,7 +207,17 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 .cookie-btn.reject:hover{background:#fff;color:#000;}
 .cookie-btn.config{background:transparent;color:#fbbf24;border:1px solid #fbbf24;}
 .cookie-btn.config:hover{background:#fbbf24;color:#000;}
-@media(max-width:600px){.car-wrap{height:240px;}.wa-float{width:50px;height:50px;font-size:1.5rem;bottom:15px;right:15px;}.rad-track-item{padding:0.5rem;gap:0.5rem;}.rad-track-num{width:28px;height:28px;font-size:0.8rem;}.rad-track-play{width:32px;height:32px;}.cookie-inner{flex-direction:column;align-items:stretch;text-align:center;}.cookie-actions{justify-content:center;}}
+.live-box{background:#000;color:#fff;border:2px solid #fbbf24;border-radius:8px;padding:1.25rem;margin-top:1rem;}
+.live-badge{display:inline-flex;align-items:center;gap:0.4rem;background:#b91c1c;color:#fff;padding:0.25rem 0.65rem;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;border-radius:4px;margin-bottom:0.75rem;}
+.live-frame iframe{width:100%;aspect-ratio:16/9;border:none;border-radius:4px;}
+.radio-bar{position:fixed;bottom:0;left:0;right:0;z-index:995;background:#000;color:#fff;border-top:3px solid #fbbf24;padding:0.6rem 5.5rem 0.6rem 1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 -4px 16px rgba(0,0,0,0.35);}
+.radio-bar-title{flex:1;min-width:0;font-size:0.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fbbf24;}
+.radio-bar-btn{background:#fbbf24;color:#000;border:none;padding:0.35rem 0.65rem;font-size:0.75rem;font-weight:700;cursor:pointer;border-radius:4px;flex-shrink:0;}
+.radio-bar-btn.dark{background:#262626;color:#fff;border:1px solid #525252;}
+body.has-radio-bar{padding-bottom:60px;}
+body.has-radio-bar .wa-float{bottom:74px;}
+body.has-radio-bar .sb-status{bottom:144px;}
+@media(max-width:600px){.radio-bar{padding:0.5rem 4.5rem 0.5rem 0.75rem;gap:0.4rem;}.radio-bar-btn{padding:0.3rem 0.5rem;font-size:0.7rem;}.car-wrap{height:240px;}.wa-float{width:50px;height:50px;font-size:1.5rem;bottom:15px;right:15px;}.rad-track-item{padding:0.5rem;gap:0.5rem;}.rad-track-num{width:28px;height:28px;font-size:0.8rem;}.rad-track-play{width:32px;height:32px;}.cookie-inner{flex-direction:column;align-items:stretch;text-align:center;}.cookie-actions{justify-content:center;}}
 </style>
 </head>
 <body>
@@ -256,6 +266,10 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 <p>Recibe noticias, análisis sabermétricos y contenido exclusivo</p>
 <a href="#" class="btn-wa-lg wa-channel-link" target="_blank">📲 UNIRME AL CANAL</a>
 </div>
+<section id="envivo" class="section" style="display:none;">
+<h2 class="section-title" style="border-bottom:3px solid #fbbf24;padding-bottom:0.5rem;display:inline-block;margin-bottom:0.5rem;">📡 En Vivo <span class="live-dot"></span></h2>
+<div id="liveContainer"></div>
+</section>
 <section class="section">
 <h2 class="section-title">Historias 24h <span class="live-dot"></span></h2>
 <div id="storiesContainer" style="display:flex;gap:0.75rem;overflow-x:auto;padding:1rem 0;"></div>
@@ -373,6 +387,14 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 </div>
 </footer>
 <a href="#" class="wa-float wa-channel-link" target="_blank" title="Canal de WhatsApp">📱</a>
+<div id="radioBar" class="radio-bar" style="display:none;">
+<span style="font-size:1.1rem;">📻</span>
+<div class="radio-bar-title" id="radBarTitle">Radio La Taberna</div>
+<button onclick="radPrev()" class="radio-bar-btn dark" title="Anterior">⏮</button>
+<button onclick="radPlay()" class="radio-bar-btn" id="radBarPlayBtn" title="Play/Pausa">▶</button>
+<button onclick="radNext()" class="radio-bar-btn dark" title="Siguiente">⏭</button>
+<button onclick="openRadio()" class="radio-bar-btn dark">Playlist</button>
+</div>
 
 <!-- COOKIE BANNER -->
 <div id="cookieBanner" class="cookie-banner">
@@ -609,12 +631,31 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 <div id="boxStatus" style="margin-top:1rem;"></div>
 </div>
 <div id="tabRadio" class="tab-content">
-<div class="info">📻 <strong>Radio La Taberna</strong> · Playlist ilimitado. Puedes agregar pistas una a una o subir un playlist completo de una vez.</div>
+<div style="background:#f7f7f5;border:1px solid #e5e5e5;border-left:4px solid #b91c1c;padding:1rem;margin-bottom:1.5rem;">
+<h4 style="margin-bottom:0.75rem;color:#b91c1c;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;">📡 Transmisión En Vivo (Radio / TV)</h4>
+<label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:normal;font-size:0.9rem;margin-bottom:0.75rem;">
+<input type="checkbox" id="liveActive" style="width:auto;margin:0;"><span>Mostrar sección En Vivo en la portada</span>
+</label>
+<label>Modo de transmisión</label>
+<select id="liveMode">
+<option value="video">📺 TV / Video en Vivo (YouTube, Twitch, iframe)</option>
+<option value="audio">📻 Radio en Vivo (Stream MP3 / Zeno.fm / Icecast)</option>
+</select>
+<label>Título del programa en vivo</label>
+<input type="text" id="liveTitle" placeholder="Ej: Previa Magallanes vs Leones EN VIVO">
+<label>🔗 Enlace del directo, Stream MP3 o código &lt;iframe&gt;</label>
+<textarea id="liveSource" rows="2" placeholder="https://www.youtube.com/watch?v=... o https://stream.zeno.fm/... o <iframe>...</iframe>"></textarea>
+<button onclick="saveLiveConfig()" class="btn-black" style="width:100%;">💾 Guardar Transmisión En Vivo</button>
+<div id="liveStatus" style="margin-top:0.75rem;"></div>
+</div>
+<div class="info">📻 <strong>Radio La Taberna</strong> · Playlist ilimitado. Soporta archivos MP3, URLs directas o reproductores incrustados (YouTube, Spotify, SoundCloud).</div>
 <h4 style="margin:1rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">➕ Agregar pista individual</h4>
 <label>Título de la pista</label>
 <input type="text" id="radTitle" placeholder="Ej: Himno de los Navegantes">
 <label>🔗 URL del MP3 (o sube el archivo abajo)</label>
 <input type="text" id="radUrl" placeholder="https://...">
+<label>📝 O reproductor incrustado / enlace (YouTube, Spotify, SoundCloud...)</label>
+<textarea id="radEmbed" rows="2" placeholder="Pega un enlace de YouTube/Spotify o un código <iframe>...</iframe>"></textarea>
 <div class="upload-area" id="radFileArea" onclick="document.getElementById('radFile').click()" style="margin-bottom:1rem;">
 <input type="file" id="radFile" accept="audio/*" onchange="handleFile(this,'radFileArea','radFilePrev')">
 <div style="font-size:2rem;">🎵</div>
@@ -831,6 +872,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 <div class="label">🎵 Ahora suena</div>
 <div class="title" id="curTrack">Sin pistas</div>
 </div>
+<div id="radEmbedPlayer" style="display:none;margin-bottom:1rem;"></div>
 <audio id="radioPlayer" controls style="width:100%;margin-bottom:1rem;"></audio>
 <div style="display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.5rem;">
 <button onclick="radPrev()" class="btn-gold" style="width:auto;padding:0.6rem 1.2rem;">⏮ Anterior</button>
@@ -920,6 +962,7 @@ let paredon = [];
 let premBans = [];
 let stdBans = [];
 let radioTracks = [];
+let liveCfg = { active: false, mode: 'video', title: '', source_url: '' };
 let radIdx = -1;
 let carInt = { prem: null, std: null };
 let carIdx = { prem: 0, std: 0 };
@@ -933,7 +976,7 @@ async function loadAllFromSupabase() {
   updateSbStatus('🔄 Cargando datos...', 'loading');
   try {
     const [
-      aRes, rRes, bRes, vRes, mRes, sRes, dRes, bsRes, radRes, setRes
+      aRes, rRes, bRes, vRes, mRes, sRes, dRes, bsRes, radRes, setRes, chatRes, parRes
     ] = await Promise.all([
       sb.from('articles').select('*').order('created_at', { ascending: false }),
       sb.from('article_reads').select('*'),
@@ -944,7 +987,9 @@ async function loadAllFromSupabase() {
       sb.from('director_column').select('*').eq('id', 1).maybeSingle(),
       sb.from('box_scores').select('*').order('created_at', { ascending: false }).limit(1),
       sb.from('radio_tracks').select('*').order('order_index', { ascending: true }),
-      sb.from('settings').select('*').in('id', ['vip', 'chat', 'site_texts'])
+      sb.from('settings').select('*').in('id', ['vip', 'chat', 'site_texts', 'live_stream']),
+      sb.from('chat_messages').select('*').order('created_at', { ascending: true }).limit(50),
+      sb.from('paredon_posts').select('*').order('created_at', { ascending: false }).limit(50)
     ]);
 
     if (aRes.data) articles = aRes.data;
@@ -974,9 +1019,13 @@ async function loadAllFromSupabase() {
           chatOn = row.config.active || false;
         } else if (row.id === 'site_texts' && row.config) {
           siteTexts = Object.assign({}, siteTexts, row.config);
+        } else if (row.id === 'live_stream' && row.config) {
+          liveCfg = Object.assign({}, liveCfg, row.config);
         }
       });
     }
+    if (chatRes && chatRes.data) chatMsgs = chatRes.data;
+    if (parRes && parRes.data) paredon = parRes.data;
 
     updateSbStatus('✅ Datos cargados desde Supabase', 'ok');
     updateWaChannelLinks();
@@ -1021,7 +1070,8 @@ siteTexts.ticker = document.getElementById('cfgTickerText').value;
 siteTexts.cookie = document.getElementById('cfgCookieText').value;
 siteTexts.privacy = document.getElementById('cfgPrivacyText').value;
 try {
-await sb.from('settings').upsert({ id: 'site_texts', config: siteTexts });
+var { error } = await sb.from('settings').upsert({ id: 'site_texts', config: siteTexts });
+if (error) throw error;
 applySiteTexts();
 document.getElementById('siteTextsStatus').innerHTML = '<div class="ok">✅ Textos guardados y aplicados en el sitio</div>';
 } catch(e) {
@@ -2095,18 +2145,84 @@ input.value = '';
 await loadAllFromSupabase();
 renderRadList();
 }
+function isEmbedSource(val) {
+  if (!val) return false;
+  var s = val.trim();
+  if (s.indexOf('<iframe') !== -1) return true;
+  return /(youtube\.com|youtu\.be|open\.spotify\.com|soundcloud\.com|twitch\.tv|kick\.com)/i.test(s);
+}
+function toEmbedHTML(src) {
+  if (!src) return '';
+  var s = src.trim();
+  if (s.indexOf('<iframe') !== -1) return cleanHTML(s, true);
+  var ytMatch = s.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/);
+  if (ytMatch) {
+    return '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;"></iframe>';
+  }
+  if (/open\.spotify\.com\//i.test(s)) {
+    var spUrl = s.replace('open.spotify.com/', 'open.spotify.com/embed/');
+    return '<iframe src="' + esc(spUrl) + '" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:8px;"></iframe>';
+  }
+  if (/soundcloud\.com\//i.test(s)) {
+    return '<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=' + encodeURIComponent(s) + '&color=%23fbbf24"></iframe>';
+  }
+  return '<iframe src="' + esc(s) + '" style="width:100%;aspect-ratio:16/9;border:none;" allowfullscreen></iframe>';
+}
+function renderLiveStream() {
+  var sec = document.getElementById('envivo');
+  var box = document.getElementById('liveContainer');
+  if (!sec || !box) return;
+  if (!liveCfg || !liveCfg.active || !liveCfg.source_url) {
+    sec.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  sec.style.display = 'block';
+  var player = liveCfg.mode === 'audio'
+    ? '<audio controls src="' + esc(liveCfg.source_url) + '" style="width:100%;margin-top:0.5rem;"></audio>'
+    : '<div class="live-frame">' + toEmbedHTML(liveCfg.source_url) + '</div>';
+  box.innerHTML = '<div class="live-box"><div class="live-badge">🔴 EN VIVO · ' + (liveCfg.mode === 'audio' ? 'RADIO' : 'TV') + '</div>' +
+    (liveCfg.title ? '<h3 style="font-size:1.25rem;font-weight:700;color:#fbbf24;margin-bottom:0.75rem;">' + esc(liveCfg.title) + '</h3>' : '') +
+    player + '</div>';
+}
+function loadLiveCfg() {
+  var act = document.getElementById('liveActive');
+  if (!act) return;
+  act.checked = !!liveCfg.active;
+  document.getElementById('liveMode').value = liveCfg.mode || 'video';
+  document.getElementById('liveTitle').value = liveCfg.title || '';
+  document.getElementById('liveSource').value = liveCfg.source_url || '';
+}
+async function saveLiveConfig() {
+  if (!sb) { alert('⚠️ Supabase no conectado'); return; }
+  liveCfg = {
+    active: document.getElementById('liveActive').checked,
+    mode: document.getElementById('liveMode').value,
+    title: document.getElementById('liveTitle').value.trim(),
+    source_url: document.getElementById('liveSource').value.trim()
+  };
+  try {
+    var { error } = await sb.from('settings').upsert({ id: 'live_stream', config: liveCfg });
+    if (error) throw error;
+    renderLiveStream();
+    document.getElementById('liveStatus').innerHTML = '<div class="ok">✅ Transmisión en vivo guardada</div>';
+  } catch(e) {
+    document.getElementById('liveStatus').innerHTML = '<div class="err">❌ Error: ' + e.message + '</div>';
+  }
+}
 async function addRadioTrack() {
 if (!sb) { alert('⚠️ Supabase no conectado'); return; }
 var title = document.getElementById('radTitle').value.trim();
 var urlIn = document.getElementById('radUrl').value.trim();
+var embedIn = document.getElementById('radEmbed') ? document.getElementById('radEmbed').value.trim() : '';
 var fileUrl = tmpFiles.radFile ? tmpFiles.radFile.url : null;
-if (!title && !fileUrl && !urlIn) {
-document.getElementById('radStatus').innerHTML = '<div class="err">Escribe un título o sube un archivo/URL</div>';
+if (!title && !fileUrl && !urlIn && !embedIn) {
+document.getElementById('radStatus').innerHTML = '<div class="err">Escribe un título o sube un archivo/URL/embed</div>';
 return;
 }
-var finalUrl = fileUrl || urlIn;
+var finalUrl = fileUrl || embedIn || urlIn;
 if (!finalUrl) {
-document.getElementById('radStatus').innerHTML = '<div class="err">Sube un archivo o pega una URL</div>';
+document.getElementById('radStatus').innerHTML = '<div class="err">Sube un archivo, pega una URL o un reproductor incrustado</div>';
 return;
 }
 if (!title && tmpFiles.radFile) {
@@ -2124,6 +2240,7 @@ if (error) throw error;
 document.getElementById('radStatus').innerHTML = '<div class="ok">✅ Pista añadida al playlist</div>';
 document.getElementById('radTitle').value = '';
 document.getElementById('radUrl').value = '';
+if (document.getElementById('radEmbed')) document.getElementById('radEmbed').value = '';
 clearFile('radFileArea', 'radFilePrev', 'radFile');
 await loadAllFromSupabase();
 renderRadList();
@@ -2179,20 +2296,64 @@ return '<div class="rad-track-item' + playingClass + '">' +
 '</div>';
 }).join('');
 }
+function updateRadioBar() {
+  var bar = document.getElementById('radioBar');
+  if (!bar) return;
+  if (radioTracks.length === 0) {
+    bar.style.display = 'none';
+    document.body.classList.remove('has-radio-bar');
+    return;
+  }
+  bar.style.display = 'flex';
+  document.body.classList.add('has-radio-bar');
+  var p = document.getElementById('radioPlayer');
+  var titleEl = document.getElementById('radBarTitle');
+  var btnEl = document.getElementById('radBarPlayBtn');
+  if (radIdx >= 0 && radIdx < radioTracks.length) {
+    titleEl.textContent = radioTracks[radIdx].title;
+    var isEmb = isEmbedSource(radioTracks[radIdx].url);
+    btnEl.textContent = isEmb ? '📺' : (p && !p.paused ? '⏸' : '▶');
+  } else {
+    titleEl.textContent = '📻 ' + radioTracks[0].title;
+    btnEl.textContent = '▶';
+  }
+}
 function playRad(i) {
 if (i < 0 || i >= radioTracks.length) return;
 var p = document.getElementById('radioPlayer');
+var embBox = document.getElementById('radEmbedPlayer');
+var track = radioTracks[i];
+if (isEmbedSource(track.url)) {
+  p.pause();
+  p.style.display = 'none';
+  radIdx = i;
+  if (embBox) {
+    embBox.style.display = 'block';
+    embBox.innerHTML = toEmbedHTML(track.url);
+  }
+  renderRadList();
+  renderRadPlaylist();
+  updateRadioBar();
+  if (!document.getElementById('radioModal').classList.contains('active')) {
+    openRadio();
+  }
+  return;
+}
+if (embBox) { embBox.style.display = 'none'; embBox.innerHTML = ''; }
+p.style.display = 'block';
 if (i === radIdx && p.src && !p.paused) {
 p.pause();
 renderRadList();
 renderRadPlaylist();
+updateRadioBar();
 return;
 }
 radIdx = i;
-p.src = radioTracks[i].url;
+p.src = track.url;
 p.play().catch(function(e) { console.error('Error reproduciendo:', e); });
 renderRadList();
 renderRadPlaylist();
+updateRadioBar();
 }
 function setupRadioAutoNext() {
 var p = document.getElementById('radioPlayer');
@@ -2214,6 +2375,10 @@ if (radioTracks.length === 0) {
 alert('🎵 El playlist está vacío. Ve al CMS → Radio para agregar pistas.');
 return;
 }
+if (radIdx >= 0 && isEmbedSource(radioTracks[radIdx].url)) {
+  openRadio();
+  return;
+}
 if (!p.src || p.src === location.href || p.src === '') {
 playRad(0);
 } else if (p.paused) {
@@ -2223,6 +2388,7 @@ p.pause();
 }
 renderRadList();
 renderRadPlaylist();
+updateRadioBar();
 }
 function radPrev() {
 if (radioTracks.length === 0) return;
@@ -2241,28 +2407,38 @@ document.getElementById('chatContainer').innerHTML = chatMsgs.map(function(m) {
 return '<div style="padding:0.5rem;background:#f7f7f5;margin-bottom:0.25rem;border-left:3px solid #fbbf24;word-break:break-word;"><strong>' + esc(m.name) + ':</strong> ' + esc(m.msg) + '</div>';
 }).join('');
 }
-function sendChat() {
+async function sendChat() {
 var input = document.getElementById('chatInput');
-if (!input.value.trim()) { alert('Escribe tu mensaje'); return; }
-chatMsgs.push({ name: 'Tabernero', msg: input.value.trim(), date: new Date().toISOString() });
+var txt = input.value.trim();
+if (!txt) { alert('Escribe tu mensaje'); return; }
+var entry = { name: 'Tabernero', msg: txt };
+chatMsgs.push(entry);
 input.value = '';
 renderChat();
+if (sb) {
+  var { error } = await sb.from('chat_messages').insert(entry);
+  if (error) console.warn('Error guardando chat:', error.message);
+}
 }
 async function saveChatConfig() {
 if (!sb) { alert('⚠️ Supabase no conectado'); return; }
 chatOn = document.getElementById('chatActive').checked;
 try {
-await sb.from('settings').upsert({ id: 'chat', config: { active: chatOn } });
+var { error } = await sb.from('settings').upsert({ id: 'chat', config: { active: chatOn } });
+if (error) throw error;
 renderChat();
 alert('✅ Guardado en Supabase');
 } catch(e) {
 alert('❌ Error: ' + e.message);
 }
 }
-function clearChat() {
+async function clearChat() {
 if (!confirm('¿Borrar?')) return;
 chatMsgs = [];
 renderChat();
+if (sb) {
+  await sb.from('chat_messages').delete().neq('id', 0);
+}
 }
 function renderParedon() {
 if (paredon.length === 0) { document.getElementById('paredonList').innerHTML = '<p style="color:#737373;text-align:center;padding:1rem;">Sé el primero en comentar</p>'; return; }
@@ -2270,11 +2446,16 @@ document.getElementById('paredonList').innerHTML = paredon.map(function(c) {
 return '<div style="padding:0.75rem;background:#f7f7f5;border-left:3px solid #fbbf24;margin-bottom:0.5rem;word-break:break-word;">' + esc(c.content) + '</div>';
 }).join('');
 }
-function postParedon() {
+async function postParedon() {
 var input = document.getElementById('paredonInput');
-if (!input.value.trim()) { alert('Escribe tu opinión'); return; }
-paredon.unshift({ id: Date.now(), content: input.value, date: new Date().toISOString() });
+var txt = input.value.trim();
+if (!txt) { alert('Escribe tu opinión'); return; }
 input.value = '';
+if (sb) {
+  var { data, error } = await sb.from('paredon_posts').insert({ content: txt }).select().single();
+  if (!error && data) { paredon.unshift(data); renderParedon(); return; }
+}
+paredon.unshift({ id: Date.now(), content: txt, date: new Date().toISOString() });
 renderParedon();
 }
 function renderParedonMod() {
@@ -2285,10 +2466,13 @@ el.innerHTML = paredon.map(function(c) {
 return '<div class="ban-item"><div style="flex:1;word-break:break-word;">' + esc(c.content) + '</div><button onclick="delPar(' + c.id + ')" class="btn-delete">🗑️</button></div>';
 }).join('');
 }
-function delPar(id) {
+async function delPar(id) {
 paredon = paredon.filter(function(c) { return c.id !== id; });
 renderParedon();
 renderParedonMod();
+if (sb) {
+  await sb.from('paredon_posts').delete().eq('id', id);
+}
 }
 function openAbout() { openModal('aboutModal'); }
 function renderCMS() {
@@ -2304,6 +2488,7 @@ document.getElementById('dirTitle').value = director.title;
 document.getElementById('dirContent').value = director.content;
 }
 document.getElementById('chatActive').checked = chatOn;
+loadLiveCfg();
 renderRadList();
 }
 function renderAll() {
@@ -2316,7 +2501,9 @@ renderMedia();
 renderChat();
 renderParedon();
 renderCars();
+renderLiveStream();
 renderRadList();
+updateRadioBar();
 document.getElementById('vipCount').textContent = vipCfg.count;
 document.getElementById('totalReads').textContent = getTotalReads().toLocaleString();
 }
