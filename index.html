@@ -155,7 +155,26 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 .sb-status.ok{background:#16a34a;color:#fff;}
 .sb-status.err{background:#b91c1c;color:#fff;}
 .sb-status.loading{background:#f59e0b;color:#000;}
-@media(max-width:600px){.car-wrap{height:240px;}.wa-float{width:50px;height:50px;font-size:1.5rem;bottom:15px;right:15px;}}
+/* RADIO PLAYLIST */
+.rad-track-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem;background:#fff;border:1px solid #e5e5e5;margin-bottom:0.5rem;border-radius:4px;transition:all 0.2s;}
+.rad-track-item:hover{border-color:#fbbf24;background:#fffbeb;}
+.rad-track-item.playing{border-color:#fbbf24;background:#fffbeb;box-shadow:0 0 0 2px rgba(251,191,36,0.3);}
+.rad-track-num{background:#000;color:#fbbf24;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.9rem;border-radius:50%;flex-shrink:0;}
+.rad-track-item.playing .rad-track-num{background:#fbbf24;color:#000;animation:pulse 1.5s infinite;}
+.rad-track-info{flex:1;min-width:0;}
+.rad-track-title{font-weight:700;font-size:0.95rem;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rad-track-meta{font-size:0.7rem;color:#737373;letter-spacing:0.05em;text-transform:uppercase;margin-top:0.15rem;}
+.rad-track-play{background:#fbbf24;color:#000;border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+.rad-track-play:hover{background:#000;color:#fbbf24;transform:scale(1.1);}
+.rad-track-del{background:transparent;color:#b91c1c;border:1px solid #b91c1c;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+.rad-track-del:hover{background:#b91c1c;color:#fff;}
+.rad-now-playing{background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);color:#fff;padding:1rem;border-left:4px solid #fbbf24;margin-bottom:1rem;border-radius:4px;}
+.rad-now-playing .label{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:#fbbf24;font-weight:700;margin-bottom:0.25rem;}
+.rad-now-playing .title{font-size:1.1rem;font-weight:700;}
+.rad-upload-progress{background:#f7f7f5;border:1px solid #e5e5e5;padding:0.75rem;margin-top:0.75rem;border-radius:4px;font-size:0.85rem;}
+.rad-upload-progress .bar{height:6px;background:#e5e5e5;border-radius:3px;overflow:hidden;margin-top:0.5rem;}
+.rad-upload-progress .bar-fill{height:100%;background:#fbbf24;transition:width 0.3s;}
+@media(max-width:600px){.car-wrap{height:240px;}.wa-float{width:50px;height:50px;font-size:1.5rem;bottom:15px;right:15px;}.rad-track-item{padding:0.5rem;gap:0.5rem;}.rad-track-num{width:28px;height:28px;font-size:0.8rem;}.rad-track-play{width:32px;height:32px;}}
 </style>
 </head>
 <body>
@@ -375,7 +394,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <button onclick="showTab('stories',this)" class="tab-btn">Stories</button>
         <button onclick="showTab('director',this)" class="tab-btn">Director</button>
         <button onclick="showTab('roster',this)" class="tab-btn">Roster</button>
-        <button onclick="showTab('radio',this)" class="tab-btn">Radio</button>
+        <button onclick="showTab('radio',this)" class="tab-btn">📻 Radio</button>
         <button onclick="showTab('vip',this)" class="tab-btn">⭐ VIP</button>
         <button onclick="showTab('chat',this)" class="tab-btn">Chat</button>
         <button onclick="showTab('comments',this)" class="tab-btn">Comentarios</button>
@@ -485,6 +504,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
       </div>
 
       <div id="tabVisuals" class="tab-content">
+        <div class="info">📸 <strong>Visuales:</strong> aquí van imágenes y fotos (fotorreportajes y memes). Para audio/video usa la pestaña Multimedia.</div>
         <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
           <button onclick="setVisType('fotorreportaje',this)" class="tab-btn active">📷 Fotorreportaje</button>
           <button onclick="setVisType('meme',this)" class="tab-btn">😄 Meme</button>
@@ -506,6 +526,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
       </div>
 
       <div id="tabMedia" class="tab-content">
+        <div class="info">🎙️ <strong>Multimedia:</strong> aquí van SOLO audio (podcasts) y video. Para videos de YouTube usa el campo "HTML incrustado" con el código &lt;iframe&gt; de compartir.</div>
         <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
           <button onclick="setMedType('podcast',this)" class="tab-btn active">🎙️ Podcast</button>
           <button onclick="setMedType('video',this)" class="tab-btn">🎥 Video</button>
@@ -515,13 +536,13 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div class="upload-area" id="medFileArea" onclick="document.getElementById('medFile').click()">
           <input type="file" id="medFile" accept="audio/*,video/*" onchange="handleFile(this,'medFileArea','medFilePrev')">
           <div style="font-size:2rem;">🎵</div>
-          <div style="font-size:0.85rem;color:#404040;"><strong>Subir audio/video</strong></div>
+          <div style="font-size:0.85rem;color:#404040;"><strong>Subir audio/video</strong><br><small>Solo MP3, WAV, MP4, WEBM...</small></div>
         </div>
         <div id="medFilePrev" class="preview-box" style="display:none;"></div>
-        <label>🔗 O URL</label>
+        <label>🔗 O URL (audio/video directo)</label>
         <input type="text" id="medUrl" placeholder="https://...">
-        <label>📝 HTML incrustado</label>
-        <textarea id="medEmbed" rows="2" placeholder='<iframe src="..."></iframe>'></textarea>
+        <label>📝 HTML incrustado (para YouTube, Vimeo, Spotify...)</label>
+        <textarea id="medEmbed" rows="3" placeholder='<iframe width="560" height="315" src="https://www.youtube.com/embed/XXXXX" frameborder="0" allowfullscreen></iframe>'></textarea>
         <button onclick="publishMedia()" class="btn-black" style="width:100%;">Publicar</button>
         <div id="medStatus" style="margin-top:1rem;"></div>
         <h4 style="margin-top:2rem;">🎙️ Multimedia publicada</h4>
@@ -562,14 +583,33 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
         <div id="boxStatus" style="margin-top:1rem;"></div>
       </div>
 
+      <!-- TAB RADIO MEJORADO -->
       <div id="tabRadio" class="tab-content">
-        <label>Título</label>
-        <input type="text" id="radTitle" placeholder="Jingle">
-        <label>🔗 URL del MP3</label>
+        <div class="info">📻 <strong>Radio La Taberna</strong> · Playlist ilimitado. Puedes agregar pistas una a una o subir un playlist completo de una vez.</div>
+        
+        <h4 style="margin:1rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">➕ Agregar pista individual</h4>
+        <label>Título de la pista</label>
+        <input type="text" id="radTitle" placeholder="Ej: Himno de los Navegantes">
+        <label>🔗 URL del MP3 (o sube el archivo abajo)</label>
         <input type="text" id="radUrl" placeholder="https://...">
-        <button onclick="addRadioTrack()" class="btn-black" style="width:100%;">Añadir</button>
+        <div class="upload-area" id="radFileArea" onclick="document.getElementById('radFile').click()" style="margin-bottom:1rem;">
+          <input type="file" id="radFile" accept="audio/*" onchange="handleFile(this,'radFileArea','radFilePrev')">
+          <div style="font-size:2rem;">🎵</div>
+          <div style="font-size:0.85rem;color:#404040;"><strong>Subir archivo de audio</strong><br><small>MP3, WAV, OGG, M4A...</small></div>
+        </div>
+        <div id="radFilePrev" class="preview-box" style="display:none;"></div>
+        <button onclick="addRadioTrack()" class="btn-black" style="width:100%;">➕ Añadir pista</button>
         <div id="radStatus" style="margin-top:1rem;"></div>
-        <h4 style="margin-top:1.5rem;">Pistas:</h4>
+
+        <h4 style="margin:1.5rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">📂 Cargar playlist completo (varios archivos a la vez)</h4>
+        <div class="upload-area" id="radPlaylistArea" onclick="document.getElementById('radPlaylistFiles').click()">
+          <input type="file" id="radPlaylistFiles" accept="audio/*" multiple onchange="uploadRadioPlaylist(this)">
+          <div style="font-size:2rem;">📂</div>
+          <div style="font-size:0.85rem;color:#404040;"><strong>Selecciona varios archivos de audio</strong><br><small>Se subirán todos juntos al playlist</small></div>
+        </div>
+        <div id="radPlaylistProgress"></div>
+
+        <h4 style="margin:1.5rem 0 0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">🎼 Playlist (<span id="radTotalCount">0</span> pistas · sin límite)</h4>
         <div id="radList"></div>
       </div>
 
@@ -743,21 +783,25 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
   </div>
 </div>
 
+<!-- MODAL RADIO MEJORADO -->
 <div id="radioModal" class="modal">
-  <div class="modal-box">
+  <div class="modal-box" style="max-width:600px;">
     <div class="modal-head">
       <div class="modal-title">📻 Radio La Taberna</div>
       <button onclick="closeModal('radioModal')" class="close-x">&times;</button>
     </div>
     <div class="modal-body">
-      <p>Reproduciendo: <strong id="curTrack">Sin pistas</strong></p>
-      <audio id="radioPlayer" controls style="width:100%;margin:0.5rem 0;"></audio>
-      <div style="display:flex;gap:0.5rem;justify-content:center;">
-        <button onclick="radPrev()" class="btn-gold">⏮</button>
-        <button onclick="radPlay()" class="btn-gold">▶</button>
-        <button onclick="radNext()" class="btn-gold">⏭</button>
+      <div id="radNowPlaying" class="rad-now-playing" style="display:none;">
+        <div class="label">🎵 Ahora suena</div>
+        <div class="title" id="curTrack">Sin pistas</div>
       </div>
-      <h4 style="margin-top:1rem;">Lista:</h4>
+      <audio id="radioPlayer" controls style="width:100%;margin-bottom:1rem;"></audio>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.5rem;">
+        <button onclick="radPrev()" class="btn-gold" style="width:auto;padding:0.6rem 1.2rem;">⏮ Anterior</button>
+        <button onclick="radPlay()" class="btn-black" style="width:auto;padding:0.6rem 1.5rem;">▶ Play</button>
+        <button onclick="radNext()" class="btn-black" style="width:auto;padding:0.6rem 1.2rem;">⏭ Siguiente</button>
+      </div>
+      <h4 style="margin-bottom:0.75rem;color:#d4a017;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #e5e5e5;padding-bottom:0.5rem;">🎼 Playlist · <span id="radModalCount">0</span> pistas</h4>
       <div id="radPlaylist"></div>
     </div>
   </div>
@@ -770,7 +814,6 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 const SUPABASE_URL = 'https://jwizuyoipoymqzvuirnb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3aXp1eW9pcG95bXF6dnVpcm5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxMTU5ODMsImV4cCI6MjEwNzY5MTk4M30.zJCH7t3FkmyNAwxnt6pMGFB-leiANwgdt0QA6wwVMtU';
 
-// Enlace del canal de WhatsApp (editable desde CMS)
 let WA_CHANNEL = 'https://whatsapp.com/channel/0029VbEUnoR8Pgs8zcNAmv0R';
 
 let sb = null;
@@ -816,7 +859,6 @@ async function testConnection() {
   }
 }
 
-// Actualiza todos los enlaces del canal de WhatsApp en el DOM
 function updateWaChannelLinks() {
   document.querySelectorAll('.wa-channel-link').forEach(function(el) {
     el.setAttribute('href', WA_CHANNEL);
@@ -842,7 +884,7 @@ let paredon = [];
 let premBans = [];
 let stdBans = [];
 let radioTracks = [];
-let radIdx = 0;
+let radIdx = -1;
 let carInt = { prem: null, std: null };
 let carIdx = { prem: 0, std: 0 };
 let reads = {};
@@ -877,17 +919,15 @@ async function loadAllFromSupabase() {
     var { data: vipData } = await sb.from('settings').select('*').eq('id', 'vip').maybeSingle();
     if (vipData && vipData.config) {
       vipCfg = vipData.config;
-      // Si existe el enlace guardado del canal, actualizarlo
       if (vipCfg.waChannel && vipCfg.waChannel.trim() !== '') {
         WA_CHANNEL = vipCfg.waChannel;
       }
     }
-    var { data: radData } = await sb.from('radio_tracks').select('*').order('created_at', { ascending: false });
+    var { data: radData } = await sb.from('radio_tracks').select('*').order('order_index', { ascending: true });
     if (radData) radioTracks = radData;
     var { data: chatCfg } = await sb.from('settings').select('*').eq('id', 'chat').maybeSingle();
     if (chatCfg) chatOn = chatCfg.config.active || false;
     updateSbStatus('✅ Datos cargados desde Supabase', 'ok');
-    // Actualizar enlaces del canal en todo el sitio
     updateWaChannelLinks();
     renderAll();
   } catch(e) {
@@ -1004,7 +1044,7 @@ async function clearAllData() {
     director = null; boxScore = null;
     chatMsgs = []; chatOn = false;
     paredon = []; premBans = []; stdBans = [];
-    radioTracks = []; reads = {};
+    radioTracks = []; reads = {}; radIdx = -1;
     await loadAllFromSupabase();
     alert('✅ Todo borrado de Supabase');
   } catch(e) {
@@ -1657,11 +1697,19 @@ async function publishVisual() {
   var imgUrl = document.getElementById('visImgUrl').value.trim();
   if (!title) { document.getElementById('visStatus').innerHTML = '<div class="err">Completa el título</div>'; return; }
   var finalUrl = null;
-  if (tmpFiles.visImg) finalUrl = tmpFiles.visImg.url;
+  if (tmpFiles.visImg) {
+    if (tmpFiles.visImg.type && !tmpFiles.visImg.type.startsWith('image/')) {
+      document.getElementById('visStatus').innerHTML = '<div class="err">❌ Solo se permiten imágenes. Para audio/video usa la pestaña Multimedia.</div>';
+      return;
+    }
+    finalUrl = tmpFiles.visImg.url;
+  }
   else if (imgUrl) finalUrl = imgUrl;
   else finalUrl = demoSq(title.substring(0,10), '#b91c1c', '#000');
+  document.getElementById('visStatus').innerHTML = '<div class="info">⏳ Publicando en Supabase...</div>';
   try {
-    await sb.from('visuals').insert({ type: curVisType, title: title, image_url: finalUrl });
+    var { data, error } = await sb.from('visuals').insert({ type: curVisType, title: title, image_url: finalUrl }).select().single();
+    if (error) throw error;
     document.getElementById('visStatus').innerHTML = '<div class="ok">✅ Publicado en Supabase</div>';
     document.getElementById('visTitle').value = '';
     document.getElementById('visImgUrl').value = '';
@@ -1669,6 +1717,7 @@ async function publishVisual() {
     await loadAllFromSupabase();
     renderCMSVisuals();
   } catch(e) {
+    console.error(e);
     document.getElementById('visStatus').innerHTML = '<div class="err">❌ Error: ' + e.message + '</div>';
   }
 }
@@ -1698,7 +1747,9 @@ function renderCMSMedia() {
   if (!el) return;
   if (medias.length === 0) { el.innerHTML = '<p style="color:#737373;">No hay multimedia</p>'; return; }
   el.innerHTML = medias.map(function(m) {
-    return '<div class="ban-item"><div style="flex:1;"><p style="font-weight:700;">' + esc(m.title) + '</p><p style="font-size:0.75rem;color:#737373;">' + m.type + '</p></div><button onclick="delMedia(' + m.id + ')" class="btn-delete">🗑️</button></div>';
+    var icon = m.type === 'podcast' ? '🎙️' : '🎥';
+    var tipo = m.embed_html ? '📎 Incrustado' : (m.media_type === 'audio' ? '🎵 Audio' : '🎬 Video');
+    return '<div class="ban-item"><div style="flex:1;"><p style="font-weight:700;">' + icon + ' ' + esc(m.title) + '</p><p style="font-size:0.75rem;color:#737373;">' + tipo + '</p></div><button onclick="delMedia(' + m.id + ')" class="btn-delete">🗑️</button></div>';
   }).join('');
 }
 
@@ -1715,13 +1766,43 @@ async function publishMedia() {
   var urlIn = document.getElementById('medUrl').value.trim();
   var embed = document.getElementById('medEmbed').value.trim();
   if (!title) { document.getElementById('medStatus').innerHTML = '<div class="err">Completa el título</div>'; return; }
+
   var finalUrl = null, finalEmbed = null;
   var mt = curMedType === 'podcast' ? 'audio' : 'video';
-  if (tmpFiles.medFile) { finalUrl = tmpFiles.medFile.url; if (tmpFiles.medFile.type.startsWith('video/')) mt = 'video'; }
-  else if (embed) finalEmbed = embed;
-  else if (urlIn) finalUrl = urlIn;
+
+  if (tmpFiles.medFile) {
+    if (tmpFiles.medFile.type && tmpFiles.medFile.type.startsWith('image/')) {
+      document.getElementById('medStatus').innerHTML = '<div class="err">❌ Multimedia solo acepta audio/video. Para imágenes usa la pestaña Visuales.</div>';
+      return;
+    }
+    finalUrl = tmpFiles.medFile.url;
+    if (tmpFiles.medFile.type.startsWith('video/')) mt = 'video';
+    else if (tmpFiles.medFile.type.startsWith('audio/')) mt = 'audio';
+  }
+  else if (embed) {
+    finalEmbed = embed;
+    if (embed.indexOf('youtube') !== -1 || embed.indexOf('youtu.be') !== -1) mt = 'video';
+    else if (embed.indexOf('vimeo') !== -1) mt = 'video';
+    else if (embed.indexOf('spotify') !== -1) mt = 'audio';
+  }
+  else if (urlIn) {
+    finalUrl = urlIn;
+    if (/\.(jpe?g|png|gif|webp|svg|bmp)(\?|$)/i.test(urlIn)) {
+      document.getElementById('medStatus').innerHTML = '<div class="err">❌ La URL apunta a una imagen. Multimedia solo acepta audio/video.</div>';
+      return;
+    }
+    if (/\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(urlIn)) mt = 'video';
+    else if (/\.(mp3|wav|ogg|m4a|aac|flac)(\?|$)/i.test(urlIn)) mt = 'audio';
+  }
+  else {
+    document.getElementById('medStatus').innerHTML = '<div class="err">Sube un archivo, pega una URL o usa HTML incrustado</div>';
+    return;
+  }
+
+  document.getElementById('medStatus').innerHTML = '<div class="info">⏳ Publicando en Supabase...</div>';
   try {
-    await sb.from('media').insert({ title: title, type: curMedType, media_type: mt, url: finalUrl, embed_html: finalEmbed });
+    var { data, error } = await sb.from('media').insert({ title: title, type: curMedType, media_type: mt, url: finalUrl, embed_html: finalEmbed }).select().single();
+    if (error) throw error;
     document.getElementById('medStatus').innerHTML = '<div class="ok">✅ Publicado en Supabase</div>';
     document.getElementById('medTitle').value = '';
     document.getElementById('medUrl').value = '';
@@ -1730,6 +1811,7 @@ async function publishMedia() {
     await loadAllFromSupabase();
     renderCMSMedia();
   } catch(e) {
+    console.error(e);
     document.getElementById('medStatus').innerHTML = '<div class="err">❌ Error: ' + e.message + '</div>';
   }
 }
@@ -1823,7 +1905,6 @@ function loadVIPCfg() {
 
 async function saveVIPConfig() {
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
-  // Guardar enlace del canal de WhatsApp
   var newChannel = document.getElementById('waChannelInput').value.trim();
   if (newChannel) {
     vipCfg.waChannel = newChannel;
@@ -1851,65 +1932,243 @@ function renderAnalytics() {
   document.getElementById('statVip').textContent = vipCfg.count;
 }
 
+// ============================================================
+// RADIO — Lista con nombres visibles + subida de playlist
+// ============================================================
 function renderRadList() {
   var el = document.getElementById('radList');
   if (!el) return;
-  if (radioTracks.length === 0) { el.innerHTML = '<p style="color:#737373;">No hay pistas</p>'; return; }
+  document.getElementById('radTotalCount').textContent = radioTracks.length;
+  if (radioTracks.length === 0) { 
+    el.innerHTML = '<p style="color:#737373;text-align:center;padding:2rem;background:#f7f7f5;border-radius:4px;">🎵 No hay pistas en el playlist.<br><small>Agrega una pista individual o carga un playlist completo.</small></p>'; 
+    return; 
+  }
   el.innerHTML = radioTracks.map(function(t, i) {
-    return '<div class="ban-item"><div style="flex:1;"><p style="font-weight:700;">🎵 ' + esc(t.title) + '</p></div><button onclick="delRad(' + i + ')" class="btn-delete">🗑️</button></div>';
+    var isPlaying = (i === radIdx);
+    var playingClass = isPlaying ? ' playing' : '';
+    var playIcon = isPlaying ? '⏸' : '▶';
+    return '<div class="rad-track-item' + playingClass + '">' +
+      '<div class="rad-track-num">' + (i+1) + '</div>' +
+      '<div class="rad-track-info">' +
+        '<div class="rad-track-title">' + esc(t.title) + '</div>' +
+        '<div class="rad-track-meta">🎵 Pista ' + (i+1) + ' de ' + radioTracks.length + '</div>' +
+      '</div>' +
+      '<button class="rad-track-play" onclick="playRad(' + i + ')" title="' + (isPlaying ? 'Pausar' : 'Reproducir') + '">' + playIcon + '</button>' +
+      '<button class="rad-track-del" onclick="delRad(' + i + ')" title="Eliminar">🗑️</button>' +
+    '</div>';
   }).join('');
+}
+
+// Subir playlist completo (varios archivos a la vez) — SIN LÍMITE
+async function uploadRadioPlaylist(input) {
+  var files = Array.from(input.files);
+  if (!files || files.length === 0) return;
+  if (!sb) { alert('⚠️ Supabase no conectado'); return; }
+
+  var progress = document.getElementById('radPlaylistProgress');
+  progress.innerHTML = '<div class="rad-upload-progress"><strong>📂 Subiendo ' + files.length + ' archivos...</strong><div class="bar"><div class="bar-fill" id="radBarFill" style="width:0%;"></div></div><div id="radBarText" style="margin-top:0.5rem;font-size:0.8rem;color:#737373;">0 / ' + files.length + '</div></div>';
+
+  var barFill = document.getElementById('radBarFill');
+  var barText = document.getElementById('radBarText');
+  var successCount = 0;
+  var errorCount = 0;
+  var baseOrder = radioTracks.length;
+
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    if (!file.type.startsWith('audio/')) {
+      errorCount++;
+      continue;
+    }
+    try {
+      var fileName = Date.now() + '_' + i + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      var { error: uploadError } = await sb.storage.from('audio').upload(fileName, file, { upsert: true });
+      if (uploadError) throw uploadError;
+      var { data } = sb.storage.from('audio').getPublicUrl(fileName);
+      var url = data.publicUrl;
+      // Nombre limpio sin extensión
+      var trackName = file.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
+      var { error: insertError } = await sb.from('radio_tracks').insert({
+        title: trackName,
+        url: url,
+        order_index: baseOrder + i
+      });
+      if (insertError) throw insertError;
+      successCount++;
+    } catch(e) {
+      console.error('Error subiendo ' + file.name + ':', e);
+      errorCount++;
+    }
+    var pct = Math.round(((i+1) / files.length) * 100);
+    barFill.style.width = pct + '%';
+    barText.textContent = (i+1) + ' / ' + files.length + ' — ✅ ' + successCount + (errorCount > 0 ? ' · ❌ ' + errorCount : '');
+  }
+
+  var msg = '✅ ' + successCount + ' pistas añadidas al playlist';
+  if (errorCount > 0) msg += ' · ❌ ' + errorCount + ' con error';
+  progress.innerHTML = '<div class="ok">' + msg + '</div>';
+  input.value = '';
+  await loadAllFromSupabase();
+  renderRadList();
 }
 
 async function addRadioTrack() {
   if (!sb) { alert('⚠️ Supabase no conectado'); return; }
   var title = document.getElementById('radTitle').value.trim();
-  var url = document.getElementById('radUrl').value.trim();
-  if (!title || !url) { document.getElementById('radStatus').innerHTML = '<div class="err">Completa título y URL</div>'; return; }
+  var urlIn = document.getElementById('radUrl').value.trim();
+  var fileUrl = tmpFiles.radFile ? tmpFiles.radFile.url : null;
+
+  if (!title && !fileUrl && !urlIn) { 
+    document.getElementById('radStatus').innerHTML = '<div class="err">Escribe un título o sube un archivo/URL</div>'; 
+    return; 
+  }
+
+  // Si hay archivo subido, usar su URL
+  var finalUrl = fileUrl || urlIn;
+  if (!finalUrl) {
+    document.getElementById('radStatus').innerHTML = '<div class="err">Sube un archivo o pega una URL</div>';
+    return;
+  }
+
+  // Si no hay título, usar el nombre del archivo
+  if (!title && tmpFiles.radFile) {
+    title = tmpFiles.radFile.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
+  }
+  if (!title) title = 'Pista ' + (radioTracks.length + 1);
+
+  document.getElementById('radStatus').innerHTML = '<div class="info">⏳ Añadiendo a Supabase...</div>';
   try {
-    await sb.from('radio_tracks').insert({ title: title, url: url });
-    document.getElementById('radStatus').innerHTML = '<div class="ok">✅ Añadida a Supabase</div>';
+    var { error } = await sb.from('radio_tracks').insert({
+      title: title,
+      url: finalUrl,
+      order_index: radioTracks.length
+    });
+    if (error) throw error;
+    document.getElementById('radStatus').innerHTML = '<div class="ok">✅ Pista añadida al playlist</div>';
     document.getElementById('radTitle').value = '';
     document.getElementById('radUrl').value = '';
+    clearFile('radFileArea', 'radFilePrev', 'radFile');
     await loadAllFromSupabase();
+    renderRadList();
   } catch(e) {
     document.getElementById('radStatus').innerHTML = '<div class="err">❌ Error: ' + e.message + '</div>';
   }
 }
 
 async function delRad(i) {
-  if (!confirm('¿Eliminar?')) return;
-  if (sb) await sb.from('radio_tracks').delete().eq('id', radioTracks[i].id);
+  if (!confirm('¿Eliminar esta pista del playlist?')) return;
+  if (sb) {
+    try {
+      await sb.from('radio_tracks').delete().eq('id', radioTracks[i].id);
+    } catch(e) { console.error(e); }
+  }
+  // Si estamos reproduciendo esta pista, detener
+  if (i === radIdx) {
+    var p = document.getElementById('radioPlayer');
+    p.pause();
+    p.src = '';
+    radIdx = -1;
+  } else if (i < radIdx) {
+    radIdx--;
+  }
   await loadAllFromSupabase();
+  renderRadList();
+  renderRadPlaylist();
 }
 
 function renderRadPlaylist() {
   var el = document.getElementById('radPlaylist');
   if (!el) return;
-  if (radioTracks.length === 0) { el.innerHTML = '<p style="color:#737373;">No hay pistas</p>'; return; }
+  document.getElementById('radModalCount').textContent = radioTracks.length;
+  var nowPlaying = document.getElementById('radNowPlaying');
+  if (radIdx >= 0 && radIdx < radioTracks.length) {
+    nowPlaying.style.display = 'block';
+    document.getElementById('curTrack').textContent = radioTracks[radIdx].title;
+  } else {
+    nowPlaying.style.display = 'none';
+  }
+  if (radioTracks.length === 0) { 
+    el.innerHTML = '<p style="color:#737373;text-align:center;padding:2rem;background:#f7f7f5;border-radius:4px;">🎵 Playlist vacío.<br><small>Ve al CMS → Radio para agregar pistas.</small></p>'; 
+    return; 
+  }
   el.innerHTML = radioTracks.map(function(t, i) {
-    return '<div style="padding:0.5rem;background:#f7f7f5;margin-bottom:0.25rem;cursor:pointer;" onclick="playRad(' + i + ')">' + (i+1) + '. ' + esc(t.title) + '</div>';
+    var isPlaying = (i === radIdx);
+    var playingClass = isPlaying ? ' playing' : '';
+    var playIcon = isPlaying ? '⏸' : '▶';
+    return '<div class="rad-track-item' + playingClass + '">' +
+      '<div class="rad-track-num">' + (i+1) + '</div>' +
+      '<div class="rad-track-info">' +
+        '<div class="rad-track-title">' + esc(t.title) + '</div>' +
+        '<div class="rad-track-meta">🎵 Pista ' + (i+1) + ' de ' + radioTracks.length + '</div>' +
+      '</div>' +
+      '<button class="rad-track-play" onclick="playRad(' + i + ')" title="' + (isPlaying ? 'Pausar' : 'Reproducir') + '">' + playIcon + '</button>' +
+    '</div>';
   }).join('');
 }
 
 function playRad(i) {
   if (i < 0 || i >= radioTracks.length) return;
-  radIdx = i;
   var p = document.getElementById('radioPlayer');
+  // Si es la misma pista y está sonando, pausar
+  if (i === radIdx && p.src && !p.paused) {
+    p.pause();
+    renderRadList();
+    renderRadPlaylist();
+    return;
+  }
+  radIdx = i;
   p.src = radioTracks[i].url;
-  document.getElementById('curTrack').textContent = radioTracks[i].title;
-  p.play();
+  p.play().catch(function(e) { console.error('Error reproduciendo:', e); });
+  renderRadList();
+  renderRadPlaylist();
 }
 
-function openRadio() { openModal('radioModal'); renderRadPlaylist(); }
+// Auto-advance: cuando termina una pista, pasa a la siguiente
+function setupRadioAutoNext() {
+  var p = document.getElementById('radioPlayer');
+  p.addEventListener('ended', function() {
+    if (radIdx < radioTracks.length - 1) {
+      playRad(radIdx + 1);
+    } else {
+      // Volver al inicio (loop)
+      playRad(0);
+    }
+  });
+}
+
+function openRadio() { 
+  openModal('radioModal'); 
+  renderRadPlaylist(); 
+}
+
 function radPlay() {
   var p = document.getElementById('radioPlayer');
-  if (!p.src || p.src === location.href) {
-    if (radioTracks.length > 0) playRad(0);
-    else alert('No hay pistas');
-  } else p.paused ? p.play() : p.pause();
+  if (radioTracks.length === 0) {
+    alert('🎵 El playlist está vacío. Ve al CMS → Radio para agregar pistas.');
+    return;
+  }
+  if (!p.src || p.src === location.href || p.src === '') {
+    playRad(0);
+  } else if (p.paused) {
+    p.play();
+  } else {
+    p.pause();
+  }
+  renderRadList();
+  renderRadPlaylist();
 }
-function radPrev() { if (radioTracks.length === 0) return; radIdx = (radIdx - 1 + radioTracks.length) % radioTracks.length; playRad(radIdx); }
-function radNext() { if (radioTracks.length === 0) return; radIdx = (radIdx + 1) % radioTracks.length; playRad(radIdx); }
+
+function radPrev() { 
+  if (radioTracks.length === 0) return; 
+  var newIdx = (radIdx <= 0) ? radioTracks.length - 1 : radIdx - 1;
+  playRad(newIdx); 
+}
+
+function radNext() { 
+  if (radioTracks.length === 0) return; 
+  var newIdx = (radIdx >= radioTracks.length - 1) ? 0 : radIdx + 1;
+  playRad(newIdx); 
+}
 
 function renderChat() {
   if (!chatOn) { document.getElementById('chatContainer').innerHTML = '<p style="color:#737373;font-style:italic;">💤 El chat está cerrado temporalmente.</p>'; return; }
@@ -2003,6 +2262,7 @@ function renderAll() {
   renderChat();
   renderParedon();
   renderCars();
+  renderRadList();
   document.getElementById('vipCount').textContent = vipCfg.count;
   document.getElementById('totalReads').textContent = getTotalReads().toLocaleString();
 }
@@ -2010,8 +2270,8 @@ function renderAll() {
 function esc(s) { if (!s) return ''; return String(s).replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
 document.addEventListener('DOMContentLoaded', async function() {
-  // Aplicar enlace por defecto inmediatamente
   updateWaChannelLinks();
+  setupRadioAutoNext();
   if (await initSupabase()) {
     await loadAllFromSupabase();
     console.log('✅ La Taberna inicializado con Supabase');
