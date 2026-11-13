@@ -9,20 +9,20 @@
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FWGCQPZNML"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-FWGCQPZNML', { 'anonymize_ip': true });
-gtag('consent', 'default', {
-'ad_storage': 'denied',
-'ad_user_data': 'denied',
-'ad_personalization': 'denied',
-'analytics_storage': 'denied',
-'wait_for_update': 500
-});
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FWGCQPZNML', { 'anonymize_ip': true });
+  // Modo de consentimiento por defecto (hasta que el usuario acepte)
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- OPTIMIZACIÓN 3: DOMPurify para protección XSS -->
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;}
@@ -192,6 +192,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 .rad-upload-progress{background:#f7f7f5;border:1px solid #e5e5e5;padding:0.75rem;margin-top:0.75rem;border-radius:4px;font-size:0.85rem;}
 .rad-upload-progress .bar{height:6px;background:#e5e5e5;border-radius:3px;overflow:hidden;margin-top:0.5rem;}
 .rad-upload-progress .bar-fill{height:100%;background:#fbbf24;transition:width 0.3s;}
+/* COOKIE BANNER */
 .cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#000;color:#fff;padding:1.25rem 1.5rem;border-top:4px solid #fbbf24;box-shadow:0 -4px 20px rgba(0,0,0,0.3);transform:translateY(100%);transition:transform 0.4s ease;}
 .cookie-banner.show{transform:translateY(0);}
 .cookie-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
@@ -373,6 +374,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 </footer>
 <a href="#" class="wa-float wa-channel-link" target="_blank" title="Canal de WhatsApp">📱</a>
 
+<!-- COOKIE BANNER -->
 <div id="cookieBanner" class="cookie-banner">
 <div class="cookie-inner">
 <div class="cookie-text" id="cookieBannerText">
@@ -386,6 +388,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 </div>
 </div>
 
+<!-- MODAL AUTH -->
 <div id="authModal" class="modal">
 <div class="modal-box">
 <div class="modal-head">
@@ -405,6 +408,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 </div>
 </div>
 </div>
+<!-- MODAL CMS -->
 <div id="cmsModal" class="modal">
 <div class="modal-box cms-box">
 <div class="modal-head">
@@ -802,6 +806,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 </div>
 </div>
 
+<!-- MODAL PRIVACIDAD (contenido editable desde CMS) -->
 <div id="privacyModal" class="modal">
 <div class="modal-box">
 <div class="modal-head">
@@ -814,6 +819,7 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 </div>
 </div>
 
+<!-- MODAL RADIO MEJORADO -->
 <div id="radioModal" class="modal">
 <div class="modal-box" style="max-width:600px;">
 <div class="modal-head">
@@ -837,11 +843,15 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 </div>
 </div>
 <script>
+// ============================================================
+// CONFIGURACIÓN SUPABASE
+// ============================================================
 const SUPABASE_URL = 'https://jwizuyoipoymqzvuirnb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3aXp1eW9pcG95bXF6dnVpcm5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxMTU5ODMsImV4cCI6MjEwNzY5MTk4M30.zJCH7t3FkmyNAwxnt6pMGFB-leiANwgdt0QA6wwVMtU';
 let WA_CHANNEL = 'https://whatsapp.com/channel/0029VbEUnoR8Pgs8zcNAmv0R';
 let sb = null;
 
+// Textos editables del sitio
 let siteTexts = {
   ticker: '⚾ ÚLTIMA HORA: Magallanes remonta en la novena · 📊 wOBA sube a .412 · 🏆 Navegantes lideran LVBP · 📲 Síguenos en WhatsApp · ✅ Conectado a Supabase',
   cookie: '🍪 Usamos cookies · Este sitio utiliza cookies para mejorar tu experiencia, analizar el tráfico y personalizar contenido. Puedes aceptar todas, rechazarlas o leer más.',
@@ -891,7 +901,6 @@ document.querySelectorAll('.wa-channel-link').forEach(function(el) {
 el.setAttribute('href', WA_CHANNEL);
 });
 }
-
 let curUser = null;
 let curArtType = 'cronica';
 let curVisType = 'fotorreportaje';
@@ -919,9 +928,6 @@ let tmpFiles = {};
 const EMOJIS = ['😀','😂','🤣','😍','🥰','😎','🤔','😮','😢','😡','👍','👎','👏','🙌','🔥','💯','⚾','🏆','🎯','💪','❤️','🧡','💛','💚','💙','🇻🇪','🎉','🎊','✨','⭐','🌟','💫','🏅','🥇','🎖️','👀','💭','📊','📈','📉'];
 const REACTS = ['👍','❤️','😂','😮','😢','🔥','⚾','🏆'];
 
-// ============================================================
-// OPTIMIZACIÓN 1: Carga en paralelo con Promise.all
-// ============================================================
 async function loadAllFromSupabase() {
   if (!sb) return;
   updateSbStatus('🔄 Cargando datos...', 'loading');
@@ -972,7 +978,7 @@ async function loadAllFromSupabase() {
       });
     }
 
-    updateSbStatus('✅ Datos cargados', 'ok');
+    updateSbStatus('✅ Datos cargados desde Supabase', 'ok');
     updateWaChannelLinks();
     applySiteTexts();
     renderAll();
@@ -982,28 +988,33 @@ async function loadAllFromSupabase() {
   }
 }
 
+// Aplicar textos editables al DOM
 function applySiteTexts() {
-  var tickerEl = document.getElementById('tickerContent');
-  if (tickerEl && siteTexts.ticker) {
-    tickerEl.textContent = siteTexts.ticker;
-  }
-  var cookieEl = document.getElementById('cookieBannerText');
-  if (cookieEl && siteTexts.cookie) {
-    cookieEl.innerHTML = '<strong>🍪 Usamos cookies</strong> · ' + esc(siteTexts.cookie) + ' · Puedes <a onclick="setCookieConsent(\'accept\')">aceptar todas</a>, <a onclick="setCookieConsent(\'reject\')">rechazarlas</a> o <a onclick="openModal(\'privacyModal\')">leer más</a>.';
-  }
-  var privacyEl = document.getElementById('privacyBody');
-  if (privacyEl && siteTexts.privacy) {
-    // OPTIMIZACIÓN 3: Sanitizar con DOMPurify
-    privacyEl.innerHTML = cleanHTML(siteTexts.privacy) + '<button onclick="closeModal(\'privacyModal\')" class="btn-black" style="width:100%;margin-top:1rem;">Entendido</button>';
-  }
+// Ticker
+var tickerEl = document.getElementById('tickerContent');
+if (tickerEl && siteTexts.ticker) {
+tickerEl.textContent = siteTexts.ticker;
+}
+// Cookie banner
+var cookieEl = document.getElementById('cookieBannerText');
+if (cookieEl && siteTexts.cookie) {
+cookieEl.innerHTML = '<strong>🍪 Usamos cookies</strong> · ' + esc(siteTexts.cookie) + ' · Puedes <a onclick="setCookieConsent(\'accept\')">aceptar todas</a>, <a onclick="setCookieConsent(\'reject\')">rechazarlas</a> o <a onclick="openModal(\'privacyModal\')">leer más</a>.';
+}
+// Privacy modal
+var privacyEl = document.getElementById('privacyBody');
+if (privacyEl && siteTexts.privacy) {
+privacyEl.innerHTML = cleanHTML(siteTexts.privacy) + '<button onclick="closeModal(\'privacyModal\')" class="btn-black" style="width:100%;margin-top:1rem;">Entendido</button>';
+}
 }
 
+// Cargar textos en el editor del CMS
 function loadSiteTextsEditor() {
 document.getElementById('cfgTickerText').value = siteTexts.ticker || '';
 document.getElementById('cfgCookieText').value = siteTexts.cookie || '';
 document.getElementById('cfgPrivacyText').value = siteTexts.privacy || '';
 }
 
+// Guardar textos editables
 async function saveSiteTexts() {
 if (!sb) { alert('⚠️ Supabase no conectado'); return; }
 siteTexts.ticker = document.getElementById('cfgTickerText').value;
@@ -1018,11 +1029,13 @@ document.getElementById('siteTextsStatus').innerHTML = '<div class="err">❌ Err
 }
 }
 
+// Cookie consent
 function setCookieConsent(choice) {
 try {
 localStorage.setItem('cookie_consent', choice);
 localStorage.setItem('cookie_consent_date', new Date().toISOString());
 } catch(e) {}
+// Activar/desactivar Google Analytics según la elección
 if (typeof gtag === 'function') {
 if (choice === 'accept') {
 gtag('consent', 'update', {
@@ -1040,19 +1053,23 @@ gtag('consent', 'update', {
 });
 }
 }
+// Ocultar banner
 var banner = document.getElementById('cookieBanner');
 if (banner) banner.classList.remove('show');
 }
 
+// Mostrar banner de cookies (manual o automático)
 function showCookieBanner() {
 var banner = document.getElementById('cookieBanner');
 if (banner) banner.classList.add('show');
 }
 
+// Verificar si ya dio consentimiento
 function checkCookieConsent() {
 try {
 var consent = localStorage.getItem('cookie_consent');
 if (consent === 'accept' || consent === 'reject') {
+// Ya dio consentimiento, aplicar y no mostrar banner
 if (typeof gtag === 'function') {
 if (consent === 'accept') {
 gtag('consent', 'update', {
@@ -1066,6 +1083,7 @@ gtag('consent', 'update', {
 return;
 }
 } catch(e) {}
+// Mostrar banner después de 1.5 segundos
 setTimeout(function() {
 showCookieBanner();
 }, 1500);
@@ -1380,77 +1398,54 @@ metaHtml + tagsHtml + imgHtml + leadHtml +
 '</div>';
 }).join('');
 }
-
-// ============================================================
-// OPTIMIZACIÓN 2: Apertura instantánea (no bloquea el modal)
-// ============================================================
 function openFullArticle(id) {
-  var a = articles.find(function(x) { return x.id === id; });
-  if (!a) return;
-
-  // Actualizar contador localmente PRIMERO (instantáneo)
-  var currentReads = reads[a.id] || 0;
-  reads[a.id] = currentReads + 1;
-
-  // Enviar a Supabase en segundo plano (no bloquea UI)
-  if (sb) {
-    sb.from('article_reads').upsert({ article_id: a.id, count: reads[a.id] }).then(function(res) {
-      if (res.error) console.warn('Error sumando lectura:', res.error.message);
-    });
-  }
-
-  document.getElementById('fullArtTitle').textContent = a.title;
-  var typeLbl = a.type === 'cronica' ? 'Crónica' : a.type === 'editorial' ? 'Editorial' : 'Noticia';
-  var r = getRead(a.id);
-  var img = a.image_url || a.img;
-  var imgType = a.image_type || 'demo';
-  var imgHtml = '';
-  if (img && imgType !== 'embed') imgHtml = '<img src="' + img + '" style="width:100%;max-height:500px;object-fit:cover;margin-bottom:2rem;">';
-  var leadHtml = a.lead ? '<p class="article-lead">' + esc(a.lead) + '</p>' : '';
-  var tagsHtml = '';
-  if (a.tags && a.tags.length > 0) {
-    tagsHtml = '<div style="margin-bottom:2rem;">' + a.tags.map(function(t) { return '<span style="display:inline-block;background:#f7f7f5;color:#404040;padding:0.3rem 0.8rem;font-size:0.8rem;font-weight:700;text-transform:uppercase;margin-right:0.25rem;border:1px solid #e5e5e5;">#' + esc(t) + '</span>'; }).join('') + '</div>';
-  }
-  var saberHtml = '';
-  if (a.saber && Object.values(a.saber).some(function(v) { return v !== null; })) {
-    saberHtml = '<div class="saber-panel"><div class="saber-title">📊 Datos Sabermétricos</div><div class="saber-grid">';
-    if (a.saber.woba !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">wOBA</div><div class="saber-value">' + a.saber.woba + '</div></div>';
-    if (a.saber.ops !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">OPS+</div><div class="saber-value">' + a.saber.ops + '</div></div>';
-    if (a.saber.fip !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">FIP</div><div class="saber-value">' + a.saber.fip + '</div></div>';
-    if (a.saber.war !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">WAR</div><div class="saber-value">' + a.saber.war + '</div></div>';
-    if (a.saber.ev !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">Exit Vel.</div><div class="saber-value">' + a.saber.ev + '</div></div>';
-    if (a.saber.la !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">Launch Ang.</div><div class="saber-value">' + a.saber.la + '°</div></div>';
-    saberHtml += '</div></div>';
-  }
-
-  // ============================================================
-  // OPTIMIZACIÓN 4: Botones de compartir seguros (sin comillas rotas)
-  // ============================================================
-  var shareHtml = '<div class="share-bar"><span style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#404040;margin-right:0.5rem;">📲 Compartir:</span>' +
-    '<button class="share-btn wa" onclick="shareArt(\'wa\',' + a.id + ')">📱 WhatsApp</button>' +
-    '<button class="share-btn fb" onclick="shareArt(\'fb\',' + a.id + ')">📘 Facebook</button>' +
-    '<button class="share-btn tw" onclick="shareArt(\'tw\',' + a.id + ')">🐦 Twitter</button>' +
-    '<button class="share-btn" onclick="copyLink(' + a.id + ')">📋 Copiar</button></div>';
-
-  var commentsHtml = renderComments(a);
-  var created = a.created_at || a.created;
-  var metaHtml = '<div style="display:flex;gap:1rem;font-size:0.75rem;color:#737373;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem;flex-wrap:wrap;"><span>✍️ ' + esc(a.author || 'Redacción') + '</span><span>📅 ' + new Date(created).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'}) + '</span><span class="read-counter">👁️ ' + r.toLocaleString() + ' lecturas</span></div>';
-  var waBanner = '<div style="background:linear-gradient(135deg,#25d366 0%,#1ebe57 100%);color:#fff;padding:1.5rem;text-align:center;border-radius:8px;margin:2rem 0;"><h4 style="margin-bottom:0.5rem;">📱 ¿Quieres más contenido como este?</h4><p style="margin-bottom:1rem;">Únete a nuestro canal de WhatsApp</p><a href="' + WA_CHANNEL + '" target="_blank" style="display:inline-block;background:#fff;color:#25d366;padding:0.75rem 1.5rem;font-weight:700;text-decoration:none;text-transform:uppercase;border-radius:4px;">📲 UNIRME AL CANAL</a></div>';
-
-  // OPTIMIZACIÓN 3: Sanitizar contenido con DOMPurify
-  document.getElementById('fullArtBody').innerHTML =
-    '<div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:#d4a017;font-weight:700;margin-bottom:0.5rem;">' + typeLbl + '</div>' +
-    tagsHtml + imgHtml + leadHtml +
-    '<div style="font-size:1.1rem;line-height:1.8;color:#404040;">' + cleanHTML(a.content) + '</div>' +
-    saberHtml + waBanner + shareHtml + commentsHtml;
-
-  openModal('articleFullModal');
-  document.getElementById('totalReads').textContent = getTotalReads().toLocaleString();
+var a = articles.find(function(x) { return x.id === id; });
+if (!a) return;
+var currentReads = reads[a.id] || 0;
+reads[a.id] = currentReads + 1;
+if (sb) {
+  sb.from('article_reads').upsert({ article_id: a.id, count: reads[a.id] }).then(function(res) {
+    if (res.error) console.warn('Error sumando lectura:', res.error.message);
+  });
 }
-
-// ============================================================
-// OPTIMIZACIÓN 4: Función shareArt segura
-// ============================================================
+document.getElementById('fullArtTitle').textContent = a.title;
+var typeLbl = a.type === 'cronica' ? 'Crónica' : a.type === 'editorial' ? 'Editorial' : 'Noticia';
+var r = getRead(a.id);
+var img = a.image_url || a.img;
+var imgType = a.image_type || 'demo';
+var imgHtml = '';
+if (img && imgType !== 'embed') imgHtml = '<img src="' + img + '" style="width:100%;max-height:500px;object-fit:cover;margin-bottom:2rem;">';
+var leadHtml = a.lead ? '<p class="article-lead">' + esc(a.lead) + '</p>' : '';
+var tagsHtml = '';
+if (a.tags && a.tags.length > 0) {
+tagsHtml = '<div style="margin-bottom:2rem;">' + a.tags.map(function(t) { return '<span style="display:inline-block;background:#f7f7f5;color:#404040;padding:0.3rem 0.8rem;font-size:0.8rem;font-weight:700;text-transform:uppercase;margin-right:0.25rem;border:1px solid #e5e5e5;">#' + esc(t) + '</span>'; }).join('') + '</div>';
+}
+var saberHtml = '';
+if (a.saber && Object.values(a.saber).some(function(v) { return v !== null; })) {
+saberHtml = '<div class="saber-panel"><div class="saber-title">📊 Datos Sabermétricos</div><div class="saber-grid">';
+if (a.saber.woba !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">wOBA</div><div class="saber-value">' + a.saber.woba + '</div></div>';
+if (a.saber.ops !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">OPS+</div><div class="saber-value">' + a.saber.ops + '</div></div>';
+if (a.saber.fip !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">FIP</div><div class="saber-value">' + a.saber.fip + '</div></div>';
+if (a.saber.war !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">WAR</div><div class="saber-value">' + a.saber.war + '</div></div>';
+if (a.saber.ev !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">Exit Vel.</div><div class="saber-value">' + a.saber.ev + '</div></div>';
+if (a.saber.la !== null) saberHtml += '<div class="saber-stat"><div class="saber-label">Launch Ang.</div><div class="saber-value">' + a.saber.la + '°</div></div>';
+saberHtml += '</div></div>';
+}
+var shareHtml = '<div class="share-bar"><span style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#404040;margin-right:0.5rem;">📲 Compartir:</span>' +
+  '<button class="share-btn wa" onclick="shareArt(\'wa\',' + a.id + ')">📱 WhatsApp</button>' +
+  '<button class="share-btn fb" onclick="shareArt(\'fb\',' + a.id + ')">📘 Facebook</button>' +
+  '<button class="share-btn tw" onclick="shareArt(\'tw\',' + a.id + ')">🐦 Twitter</button>' +
+  '<button class="share-btn" onclick="copyLink(' + a.id + ')">📋 Copiar</button></div>';
+var commentsHtml = renderComments(a);
+var waBanner = '<div style="background:linear-gradient(135deg,#25d366 0%,#1ebe57 100%);color:#fff;padding:1.5rem;text-align:center;border-radius:8px;margin:2rem 0;"><h4 style="margin-bottom:0.5rem;">📱 ¿Quieres más contenido como este?</h4><p style="margin-bottom:1rem;">Únete a nuestro canal de WhatsApp</p><a href="' + WA_CHANNEL + '" target="_blank" style="display:inline-block;background:#fff;color:#25d366;padding:0.75rem 1.5rem;font-weight:700;text-decoration:none;text-transform:uppercase;border-radius:4px;">📲 UNIRME AL CANAL</a></div>';
+document.getElementById('fullArtBody').innerHTML =
+'<div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:#d4a017;font-weight:700;margin-bottom:0.5rem;">' + typeLbl + '</div>' +
+tagsHtml + imgHtml + leadHtml +
+'<div style="font-size:1.1rem;line-height:1.8;color:#404040;">' + cleanHTML(a.content) + '</div>' +
+saberHtml + waBanner + shareHtml + commentsHtml;
+openModal('articleFullModal');
+document.getElementById('totalReads').textContent = getTotalReads().toLocaleString();
+}
 function shareArt(net, aid) {
   var a = articles.find(function(x) { return x.id === aid; });
   if (!a) return;
@@ -1463,7 +1458,6 @@ function shareArt(net, aid) {
     : 'https://twitter.com/intent/tweet?text=' + txt + '&url=' + url;
   window.open(target, '_blank');
 }
-
 function renderComments(a) {
 var comments = a.comments || [];
 var html = '<div class="comments-section"><h4 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;">💬 Comentarios <span style="background:#fbbf24;color:#000;padding:0.2rem 0.6rem;font-size:0.75rem;font-weight:700;border-radius:2px;margin-left:0.5rem;">' + comments.length + '</span></h4>';
@@ -1521,7 +1515,7 @@ try { await sb.from('articles').update({ comments: a.comments }).eq('id', aid); 
 openFullArticle(aid);
 }
 function copyLink(aid) {
-var url = location.href + '#article-' + aid;
+var url = location.origin + location.pathname + '#article-' + aid;
 navigator.clipboard.writeText(url).then(function() { alert('📋 Copiado'); }).catch(function() { prompt('Copia:', url); });
 }
 function renderCMSArticles() {
@@ -1843,24 +1837,19 @@ curMedType = t;
 btn.parentElement.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
 btn.classList.add('active');
 }
-
-// ============================================================
-// OPTIMIZACIÓN 3: renderMedia con cleanHTML para iframes
-// ============================================================
 function renderMedia() {
-  if (medias.length === 0) { document.getElementById('mediaList').innerHTML = '<p style="color:#737373;text-align:center;padding:1rem;">No hay multimedia</p>'; return; }
-  document.getElementById('mediaList').innerHTML = medias.map(function(m) {
-    var icon = m.type === 'podcast' ? '🎙️' : '🎥';
-    var player = '';
-    if (m.embed_html) player = '<div style="margin-top:0.5rem;">' + cleanHTML(m.embed_html, true) + '</div>';
-    else if (m.url) {
-      if (m.media_type === 'audio') player = '<audio controls style="width:100%;margin-top:0.5rem;"><source src="' + m.url + '"></audio>';
-      else player = '<video controls style="width:100%;margin-top:0.5rem;"><source src="' + m.url + '"></video>';
-    } else player = '<p style="font-size:0.8rem;color:#737373;font-style:italic;margin-top:0.5rem;">Sin archivo</p>';
-    return '<div style="border:1px solid #e5e5e5;padding:1rem;margin-bottom:0.75rem;"><p style="font-weight:700;">' + icon + ' ' + esc(m.title) + '</p>' + player + '</div>';
-  }).join('');
+if (medias.length === 0) { document.getElementById('mediaList').innerHTML = '<p style="color:#737373;text-align:center;padding:1rem;">No hay multimedia</p>'; return; }
+document.getElementById('mediaList').innerHTML = medias.map(function(m) {
+var icon = m.type === 'podcast' ? '🎙️' : '🎥';
+var player = '';
+if (m.embed_html) player = '<div style="margin-top:0.5rem;">' + cleanHTML(m.embed_html, true) + '</div>';
+else if (m.url) {
+if (m.media_type === 'audio') player = '<audio controls style="width:100%;margin-top:0.5rem;"><source src="' + m.url + '"></audio>';
+else player = '<video controls style="width:100%;margin-top:0.5rem;"><source src="' + m.url + '"></video>';
+} else player = '<p style="font-size:0.8rem;color:#737373;font-style:italic;margin-top:0.5rem;">Sin archivo</p>';
+return '<div style="border:1px solid #e5e5e5;padding:1rem;margin-bottom:0.75rem;"><p style="font-weight:700;">' + icon + ' ' + esc(m.title) + '</p>' + player + '</div>';
+}).join('');
 }
-
 function renderCMSMedia() {
 var el = document.getElementById('cmsMedList');
 if (!el) return;
@@ -2332,10 +2321,6 @@ document.getElementById('vipCount').textContent = vipCfg.count;
 document.getElementById('totalReads').textContent = getTotalReads().toLocaleString();
 }
 function esc(s) { if (!s) return ''; return String(s).replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
-
-// ============================================================
-// OPTIMIZACIÓN 3: Helper cleanHTML con DOMPurify
-// ============================================================
 function cleanHTML(html, allowIframe) {
   if (!html) return '';
   if (typeof DOMPurify === 'undefined') return html;
@@ -2343,7 +2328,6 @@ function cleanHTML(html, allowIframe) {
     ? DOMPurify.sanitize(html, { ADD_TAGS: ['iframe'], ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'] })
     : DOMPurify.sanitize(html);
 }
-
 document.addEventListener('DOMContentLoaded', async function() {
 updateWaChannelLinks();
 setupRadioAutoNext();
@@ -2353,6 +2337,7 @@ console.log('✅ La Taberna inicializado con Supabase');
 } else {
 console.warn('⚠️ No se pudo conectar con Supabase');
 }
+// Verificar consentimiento de cookies
 checkCookieConsent();
 });
 document.addEventListener('keydown', function(e) {
