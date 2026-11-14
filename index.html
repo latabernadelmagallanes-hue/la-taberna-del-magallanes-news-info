@@ -27,7 +27,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;word-wrap:break-word;}
 body{font-family:Georgia,serif;background:#fff;color:#000;line-height:1.6;}
-img,video,audio,iframe{max-width:100%;height:auto;display:block;}
+img,video,audio{max-width:100%;height:auto;display:block;}
+iframe{max-width:100%;display:block;border:none;}
 .masthead{background:#000;color:#fff;border-bottom:3px solid #fbbf24;position:sticky;top:0;z-index:50;padding:1rem 1.5rem;}
 .masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .logo-icon{width:44px;height:44px;background:#fbbf24;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.75rem;}
@@ -189,6 +190,8 @@ label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppe
 .rad-now-playing{background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);color:#fff;padding:1rem;border-left:4px solid #fbbf24;margin-bottom:1rem;border-radius:4px;}
 .rad-now-playing .label{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:#fbbf24;font-weight:700;margin-bottom:0.25rem;}
 .rad-now-playing .title{font-size:1.1rem;font-weight:700;}
+.rad-embed-hint{font-size:0.75rem;color:#737373;margin-top:0.4rem;text-align:center;}
+.rad-ext-link{display:inline-block;margin-top:0.5rem;font-size:0.75rem;font-weight:700;color:#000;background:#fbbf24;padding:0.35rem 0.75rem;border-radius:4px;text-decoration:none;}
 .rad-upload-progress{background:#f7f7f5;border:1px solid #e5e5e5;padding:0.75rem;margin-top:0.75rem;border-radius:4px;font-size:0.85rem;}
 .rad-upload-progress .bar{height:6px;background:#e5e5e5;border-radius:3px;overflow:hidden;margin-top:0.5rem;}
 .rad-upload-progress .bar-fill{height:100%;background:#fbbf24;transition:width 0.3s;}
@@ -655,7 +658,7 @@ body.has-radio-bar .sb-status{bottom:144px;}
 <label>🔗 URL del MP3 (o sube el archivo abajo)</label>
 <input type="text" id="radUrl" placeholder="https://...">
 <label>📝 O reproductor incrustado / enlace (YouTube, Spotify, SoundCloud...)</label>
-<textarea id="radEmbed" rows="2" placeholder="Pega un enlace de YouTube/Spotify o un código <iframe>...</iframe>"></textarea>
+<textarea id="radEmbed" rows="2" placeholder="Pega un enlace completo de YouTube/Spotify (no enlaces cortos spotify.link) o un código <iframe>...</iframe>"></textarea>
 <div class="upload-area" id="radFileArea" onclick="document.getElementById('radFile').click()" style="margin-bottom:1rem;">
 <input type="file" id="radFile" accept="audio/*" onchange="handleFile(this,'radFileArea','radFilePrev')">
 <div style="font-size:2rem;">🎵</div>
@@ -2155,12 +2158,12 @@ function toEmbedHTML(src) {
   if (!src) return '';
   var s = src.trim();
   if (s.indexOf('<iframe') !== -1) return cleanHTML(s, true);
-  var ytMatch = s.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/);
+  var ytMatch = s.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/);
   if (ytMatch) {
-    return '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;"></iframe>';
+    return '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '?playsinline=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;"></iframe>';
   }
   if (/open\.spotify\.com\//i.test(s)) {
-    var spUrl = s.replace('open.spotify.com/', 'open.spotify.com/embed/');
+    var spUrl = s.replace(/open\.spotify\.com\/(?:intl-[a-z-]+\/)?(?:embed\/)?/i, 'open.spotify.com/embed/');
     return '<iframe src="' + esc(spUrl) + '" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:8px;"></iframe>';
   }
   if (/soundcloud\.com\//i.test(s)) {
@@ -2223,6 +2226,10 @@ return;
 var finalUrl = fileUrl || embedIn || urlIn;
 if (!finalUrl) {
 document.getElementById('radStatus').innerHTML = '<div class="err">Sube un archivo, pega una URL o un reproductor incrustado</div>';
+return;
+}
+if (/spotify\.link\//i.test(finalUrl)) {
+document.getElementById('radStatus').innerHTML = '<div class="err">❌ Enlace acortado de Spotify no compatible. Ábrelo en el navegador y pega la URL completa (open.spotify.com/...).</div>';
 return;
 }
 if (!title && tmpFiles.radFile) {
@@ -2328,8 +2335,13 @@ if (isEmbedSource(track.url)) {
   p.style.display = 'none';
   radIdx = i;
   if (embBox) {
+    var extBtn = (track.url && track.url.trim().indexOf('http') === 0)
+      ? '<div style="text-align:center;"><a href="' + esc(track.url.trim()) + '" target="_blank" rel="noopener" class="rad-ext-link">↗ Abrir en app externa</a></div>'
+      : '';
     embBox.style.display = 'block';
-    embBox.innerHTML = toEmbedHTML(track.url);
+    embBox.innerHTML = toEmbedHTML(track.url) +
+      '<p class="rad-embed-hint">📱 En celular, toca ▶ dentro del reproductor para iniciar</p>' +
+      extBtn;
   }
   renderRadList();
   renderRadPlaylist();
@@ -2512,7 +2524,7 @@ function cleanHTML(html, allowIframe) {
   if (!html) return '';
   if (typeof DOMPurify === 'undefined') return html;
   return allowIframe
-    ? DOMPurify.sanitize(html, { ADD_TAGS: ['iframe'], ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'] })
+    ? DOMPurify.sanitize(html, { ADD_TAGS: ['iframe'], ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling', 'loading', 'referrerpolicy'] })
     : DOMPurify.sanitize(html);
 }
 document.addEventListener('DOMContentLoaded', async function() {
