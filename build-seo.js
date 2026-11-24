@@ -1,17 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jwizuyoipoymqzvuirnb.supabase.co';
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3aXp1eW9pcG95bXF6dnVpcm5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxMTU5ODMsImV4cCI6MjEwNzY5MTk4M30.zJCH7t3FkmyNAwxnt6pMGFB-leiANwgdt0QA6wwVMtU';
 const SITE_URL = 'https://la-taberna-del-magallanes-news-ve.netlify.app';
-const TABLE_NAME = 'news';
+const TABLE_NAME = 'articles';
 
 function escaparHtml(texto = '') {
   return String(texto)
-    .replace(/&/g, '&')
-    .replace(/"/g, '"')
-    .replace(/</g, '<')
-    .replace(/>/g, '>');
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 function crearSlug(texto = '', id) {
@@ -26,12 +26,7 @@ function crearSlug(texto = '', id) {
 }
 
 async function generarPaginasYSitemap() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    throw new Error('Faltan SUPABASE_URL o SUPABASE_ANON_KEY en las variables de entorno de Netlify.');
-  }
-
-  // Consulta directa a public.news ordenada por fecha descendente
-  const endpoint = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=id,created_at,titulo,contenido,bajada,cuerpo,imagen,categoria,autor,fecha,destacado&order=created_at.desc`;
+  const endpoint = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=*&order=created_at.desc`;
   const response = await fetch(endpoint, {
     headers: {
       apikey: SUPABASE_ANON_KEY,
@@ -43,7 +38,7 @@ async function generarPaginasYSitemap() {
     throw new Error(`Error consultando Supabase (${response.status}): ${await response.text()}`);
   }
 
-  const noticias = await response.json();
+  const articulos = await response.json();
   const outDir = path.join(process.cwd(), 'articulos');
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
@@ -52,25 +47,40 @@ async function generarPaginasYSitemap() {
     `  <url>\n    <loc>${SITE_URL}/</loc>\n    <lastmod>${hoy}</lastmod>\n    <changefreq>hourly</changefreq>\n    <priority>1.0</priority>\n  </url>`
   ];
 
-  for (const item of noticias) {
-    const slug = crearSlug(item.titulo, item.id);
+  for (const art of articulos) {
+    const slug = crearSlug(art.title, art.id);
     const filePath = path.join(outDir, `${slug}.html`);
     const urlCanonica = `${SITE_URL}/articulos/${slug}.html`;
-    const fechaCompleta = item.fecha || item.created_at || new Date().toISOString();
+    const fechaCompleta = art.created_at || new Date().toISOString();
     const fechaIso = fechaCompleta.split('T')[0];
 
-    const titulo = item.titulo || 'Nota - La Taberna del Magallanes News';
-    const bajada = item.bajada || 'Análisis sabermétrico y actualidad de los Navegantes del Magallanes.';
-    const textoPrincipal = item.cuerpo || item.contenido || '';
-    const imagen = item.imagen || 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200&h=630&fit=crop';
-    const categoria = item.categoria || 'LVBP / Sabermetría';
-    const autor = item.autor || 'Luis Enrique Aponte';
-    const prioridad = item.destacado ? '0.9' : '0.8';
+    const titulo = art.title || 'Nota - La Taberna del Magallanes News';
+    const bajada = art.lead || 'Periodismo deportivo independiente con rigor sabermétrico sobre los Navegantes del Magallanes y la LVBP.';
+    const cuerpo = art.content || '';
+    const imagen = (art.image_url && !art.image_url.startsWith('data:'))
+      ? art.image_url
+      : 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200&h=630&fit=crop';
+    const categoria = art.type === 'cronica' ? 'Crónica' : art.type === 'editorial' ? 'Editorial' : 'Noticia';
+    const autor = art.author || 'Lic. Luis Aponte';
 
     const tituloSeguro = escaparHtml(titulo);
     const bajadaSegura = escaparHtml(bajada);
-    const categoriaSegura = escaparHtml(categoria);
     const autorSeguro = escaparHtml(autor);
+
+    let saberHtml = '';
+    if (art.saber && Object.values(art.saber).some((v) => v !== null && v !== undefined)) {
+      const s = art.saber;
+      const items = [];
+      if (s.woba !== null && s.woba !== undefined) items.push(`<div class="stat"><span>wOBA</span><strong>${s.woba}</strong></div>`);
+      if (s.ops !== null && s.ops !== undefined) items.push(`<div class="stat"><span>OPS+</span><strong>${s.ops}</strong></div>`);
+      if (s.fip !== null && s.fip !== undefined) items.push(`<div class="stat"><span>FIP</span><strong>${s.fip}</strong></div>`);
+      if (s.war !== null && s.war !== undefined) items.push(`<div class="stat"><span>WAR</span><strong>${s.war}</strong></div>`);
+      if (s.ev !== null && s.ev !== undefined) items.push(`<div class="stat"><span>Exit Vel.</span><strong>${s.ev} mph</strong></div>`);
+      if (s.la !== null && s.la !== undefined) items.push(`<div class="stat"><span>Launch Ang.</span><strong>${s.la}°</strong></div>`);
+      if (items.length > 0) {
+        saberHtml = `<section class="saber"><h2>📊 Datos Sabermétricos</h2><div class="saber-grid">${items.join('')}</div></section>`;
+      }
+    }
 
     const schemaNewsArticle = JSON.stringify({
       '@context': 'https://schema.org',
@@ -83,7 +93,7 @@ async function generarPaginasYSitemap() {
       articleSection: categoria,
       author: [{ '@type': 'Person', name: autor }],
       publisher: {
-        '@type': 'Organization',
+        '@type': 'NewsMediaOrganization',
         name: 'La Taberna del Magallanes News',
         url: SITE_URL
       },
@@ -95,9 +105,10 @@ async function generarPaginasYSitemap() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${tituloSeguro} | La Taberna del Magallanes News</title>
+  <title>${tituloSeguro} · La Taberna del Magallanes News</title>
   <meta name="description" content="${bajadaSegura}" />
   <meta name="author" content="${autorSeguro}" />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="${urlCanonica}" />
   <meta property="og:site_name" content="La Taberna del Magallanes News" />
   <meta property="og:type" content="article" />
@@ -115,47 +126,53 @@ async function generarPaginasYSitemap() {
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-FWGCQPZNML');
+    gtag('config', 'G-FWGCQPZNML', { 'anonymize_ip': true });
   </script>
   <style>
-    body { background: #0a0a0a; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif; margin: 0; line-height: 1.65; }
-    header { background: #111827; border-bottom: 1px solid #1e293b; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
-    header a { color: #38bdf8; text-decoration: none; font-weight: 600; }
-    main { max-width: 780px; margin: 2rem auto; padding: 0 1.25rem; }
-    .meta-top { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; font-size: 0.85rem; }
-    .badge { background: #0284c7; color: #fff; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
-    h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.75rem 0; color: #ffffff; }
-    .byline { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.25rem; }
-    .bajada { font-size: 1.15rem; color: #cbd5e1; border-left: 3px solid #0284c7; padding-left: 1rem; margin-bottom: 1.5rem; }
-    img { width: 100%; max-height: 460px; object-fit: cover; border-radius: 8px; margin-bottom: 1.5rem; }
-    .contenido-articulo { font-size: 1.05rem; color: #e2e8f0; white-space: pre-line; }
+    body { font-family: Georgia, serif; background: #fff; color: #000; margin: 0; line-height: 1.7; }
+    header { background: #000; color: #fff; border-bottom: 3px solid #fbbf24; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+    header a { color: #fbbf24; text-decoration: none; font-weight: 700; font-family: system-ui, sans-serif; font-size: 0.9rem; }
+    main { max-width: 800px; margin: 2rem auto; padding: 0 1.25rem; }
+    .cat { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a017; font-weight: 700; font-family: system-ui, sans-serif; }
+    h1 { font-size: clamp(1.75rem, 4vw, 2.6rem); line-height: 1.15; margin: 0.5rem 0 1rem; }
+    .meta { font-size: 0.8rem; color: #737373; font-family: system-ui, sans-serif; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .lead { font-size: 1.15rem; font-style: italic; color: #404040; border-left: 4px solid #fbbf24; padding-left: 1rem; margin-bottom: 1.5rem; }
+    img { width: 100%; max-height: 480px; object-fit: cover; margin-bottom: 1.5rem; }
+    .cuerpo { font-size: 1.1rem; color: #262626; }
+    .cuerpo p { margin-bottom: 1.1rem; }
+    .saber { background: #000; color: #fff; padding: 1.25rem; border-top: 3px solid #fbbf24; margin: 2rem 0; font-family: system-ui, sans-serif; }
+    .saber h2 { color: #fbbf24; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 1rem; }
+    .saber-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.75rem; }
+    .stat { background: rgba(255,255,255,0.06); border: 1px solid rgba(251,191,36,0.35); padding: 0.65rem; text-align: center; }
+    .stat span { display: block; font-size: 0.65rem; color: #fbbf24; text-transform: uppercase; }
+    .stat strong { font-size: 1.35rem; color: #fbbf24; }
+    footer { background: #000; color: #d4d4d4; text-align: center; padding: 2rem 1rem; border-top: 4px solid #fbbf24; margin-top: 3rem; font-size: 0.85rem; }
   </style>
 </head>
 <body>
   <header>
     <a href="/">← La Taberna del Magallanes News</a>
-    <span style="color:#94a3b8;font-size:0.85rem;">Periodismo Sabermétrico</span>
+    <a href="/?article=${art.id}">Comentar en portada 💬</a>
   </header>
   <main>
     <article>
-      <div class="meta-top">
-        <span class="badge">${categoriaSegura}</span>
-        <time datetime="${fechaIso}" style="color:#94a3b8;">${fechaIso}</time>
-      </div>
+      <div class="cat">${categoria}</div>
       <h1>${tituloSeguro}</h1>
-      <div class="byline">Por <strong>${autorSeguro}</strong></div>
-      <p class="bajada">${bajadaSegura}</p>
-      <img src="${imagen}" alt="${tituloSeguro}" />
-      <div class="contenido-articulo">${textoPrincipal}</div>
+      <div class="meta">✍️ ${autorSeguro} · 📅 ${fechaIso}</div>
+      ${art.image_url ? `<img src="${escaparHtml(art.image_url)}" alt="${tituloSeguro}" />` : ''}
+      <p class="lead">${bajadaSegura}</p>
+      <div class="cuerpo">${cuerpo}</div>
+      ${saberHtml}
     </article>
   </main>
+  <footer>La Taberna del Magallanes News · Fundado por Lic. Luis Aponte · © 2026</footer>
 </body>
 </html>`;
 
     fs.writeFileSync(filePath, html, 'utf-8');
 
     urlsSitemap.push(
-      `  <url>\n    <loc>${urlCanonica}</loc>\n    <lastmod>${fechaIso}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${prioridad}</priority>\n  </url>`
+      `  <url>\n    <loc>${urlCanonica}</loc>\n    <lastmod>${fechaIso}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`
     );
   }
 
@@ -165,7 +182,7 @@ ${urlsSitemap.join('\n')}
 </urlset>`;
 
   fs.writeFileSync(path.join(process.cwd(), 'sitemap.xml'), sitemapXml, 'utf-8');
-  console.log(`Éxito: ${noticias.length} noticias de public.news generadas + sitemap.xml`);
+  console.log(`Éxito: ${articulos.length} artículos de public.articles generados + sitemap.xml`);
 }
 
 generarPaginasYSitemap().catch((err) => {
